@@ -1,0 +1,6 @@
+name: WODSS
+channels:
+  - defaults
+dependencies:
+  - python=3.9
+  - flask
