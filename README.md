@@ -28,7 +28,7 @@ conda activate WODSS
 ## Test
 
 ## Installieren von neuen Libraries
-Wird eine Library neu installiert, muss diese im `environment.yml` nachgeführt werden.
+Wird eine Library neu installiert (`conda install XYZ`), muss diese im `environment.yml` nachgeführt werden.
 Dies kann manuell geschehen, am einfachsten durch Kopieren der Ausgabe von folgendem Befehl:
 ``` zsh / CMD
  conda env export --from-history
