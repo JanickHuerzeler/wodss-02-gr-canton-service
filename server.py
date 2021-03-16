@@ -8,9 +8,5 @@ app.register_blueprint(municipalities_controller, url_prefix='/municipalities')
 # TODO: Implement generic error handler
 # TODO: Config of settings/connection strings etc.
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:postgres@localhost:5432/wodssCantonServiceGR'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
-
 if __name__ == '__main__':
     app.run()
