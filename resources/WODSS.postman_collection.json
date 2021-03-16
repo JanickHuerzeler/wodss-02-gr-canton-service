@@ -1,0 +1,262 @@
+{
+	"info": {
+		"_postman_id": "3d4d0d46-2e2e-4f2e-ab68-b1aa292c9cac",
+		"name": "WODSS",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Incidences",
+			"item": [
+				{
+					"name": "Incidences all",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:5000/incidences/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"incidences",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Incidences all \"dateFrom\"",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:5000/incidences/?dateFrom=2021-03-01",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"incidences",
+								""
+							],
+							"query": [
+								{
+									"key": "dateFrom",
+									"value": "2021-03-01"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Incidences all \"dateTo\"",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:5000/incidences/?dateTo=2021-02-01",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"incidences",
+								""
+							],
+							"query": [
+								{
+									"key": "dateTo",
+									"value": "2021-02-01"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Incidences all \"dateFrom & dateTo\"",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:5000/incidences/?dateFrom=2021-01-15&dateTo=2021-02-15",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"incidences",
+								""
+							],
+							"query": [
+								{
+									"key": "dateFrom",
+									"value": "2021-01-15"
+								},
+								{
+									"key": "dateTo",
+									"value": "2021-02-15"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Incidences \"Filisur\"",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:5000/incidences/3522",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"incidences",
+								"3522"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Incidences \"Filisur\" Copy",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:5000/incidences/3522/?dateFrom=2021-01-15&dateTo=2021-02-15",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"incidences",
+								"3522",
+								""
+							],
+							"query": [
+								{
+									"key": "dateFrom",
+									"value": "2021-01-15"
+								},
+								{
+									"key": "dateTo",
+									"value": "2021-02-15"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Municipalities",
+			"item": [
+				{
+					"name": "Municipalities all",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:5000/municipalities/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"municipalities",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Municipality \"Filisur\"",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:5000/municipalities/3522",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"municipalities",
+								"3522"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Municipality \"Brusio\"",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:5000/municipalities/3551",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"municipalities",
+								"3551"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"protocolProfileBehavior": {}
+}
