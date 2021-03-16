@@ -19,6 +19,14 @@ Das soeben erstellte Conda Environment muss dabei noch aktiviert werden:
 ``` zsh /CMD
 conda activate WODSS
 ```
+
+## Database
+- Install PostgreSQL
+- Create database `wodssCantonServiceGR`
+- User `postgres`, Password `postgres`
+- Create tables `python manage.py db upgrade`
+- Demodata `resources/demoData.sql`
+
 ## Build
 TODO: FLASK_APP Variable setzen, aktuell via "Play" auf app.py
 ``` ZSH / CMD
