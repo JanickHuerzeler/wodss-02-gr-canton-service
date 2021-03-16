@@ -1,4 +1,4 @@
-name: WODSS4
+name: WODSS
 channels:
   - defaults
   - conda-forge
