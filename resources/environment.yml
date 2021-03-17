@@ -9,3 +9,8 @@ dependencies:
   - flask-script
   - flask-migrate
   - psycopg2
+  - requests
+  - autopep8
+  - json
+  - ipykernel
+  - pandas

@@ -47,3 +47,5 @@ Sobald das `environment.yml` gepushed wurde, können die Projektmitarbeitenden i
 ``` zsh / CMD
 conda env update --file environment.yml
 ```
+
+    `-- prune` würde zusätzlich noch nicht mehr verwendete Libraries gleich entfernen.
