@@ -16,3 +16,4 @@ dependencies:
   - pandas
   - openpyxl
   - nbconvert
+  - lxml
