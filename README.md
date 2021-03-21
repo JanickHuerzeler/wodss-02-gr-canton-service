@@ -27,6 +27,25 @@ conda activate WODSS
 - Create tables `python manage.py db upgrade`
 - Demodata `resources/demoData.sql`
 
+### Schritt-für-Schritt Anleitung
+Nach der Installation von PosgreSQL können folgende Befehle ausgeführt werden:
+``` ZSH / CMD
+createdb wodssCantonServiceGR
+psql wodssCantonServiceGR
+CREATE USER postgres 
+```
+
+Zu diesem Zeitpunkt ist die Datenbank und der User erstellt.
+
+In einem neuen Terminal/Konsole sollen nun die Tabellen aufgrund der Model-Klassen in Python erstellt werden:
+```ZSH / CMD
+python manage.py db upgrade
+```
+Zurück im PSQL-Terminal können nun die Demo-Daten in die Tabellen eingefügt werden:
+```ZSH / CMD
+\i resources/demoData.sql
+```
+
 ## Build
 TODO: FLASK_APP Variable setzen, aktuell via "Play" auf app.py
 ``` ZSH / CMD
