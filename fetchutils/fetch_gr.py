@@ -87,7 +87,7 @@ def get_canton_data_df():
     df_response_json.FID = df_response_json.FID.astype('int')
 
     df_cleaned = df_response_json[['Datum', 'Region', 'Neue_Faelle']]
-    df_cleaned = df_cleaned.groupby(['Region', 'Datum']).sum()
+    # df_cleaned = df_cleaned.groupby(['Region', 'Datum']).sum() # Grouping will happen at later point
 
     return df_cleaned
 
