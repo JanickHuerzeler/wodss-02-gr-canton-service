@@ -28,7 +28,7 @@ conda activate WODSS
 - Demodata `resources/demoData.sql`
 
 ### Schritt-für-Schritt Anleitung
-Nach der Installation von PosgreSQL können folgende Befehle ausgeführt werden:
+Nach der Installation von PostgreSQL können folgende Befehle ausgeführt werden:
 ``` ZSH / CMD
 createdb wodssCantonServiceGR
 psql wodssCantonServiceGR
