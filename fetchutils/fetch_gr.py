@@ -11,28 +11,28 @@ def get_canton_data() -> str:
     endpointUrl = 'https://services1.arcgis.com/YAuo6vcW85VPu7OE/ArcGIS/rest/services/Fallzahlen_Pro_Region/FeatureServer/0/query'
 
     # params = (
-     # ('f', 'json'),
-     # ('limit', f'{limit}'),
-     # ('offset', f'{offset}'),
-     # ('where', '1=1'),
-     # ('objectIds',''),
-     # ('time',''),
-     # ('resultType','none'),
-     # ('outFields', '*'),
-     # ('returnIdsOnly','false'),
-     # ('returnUniqueIdsOnly','false'),
-     # ('returnCountOnly','false'),
-     # ('returnDistinctValues','false'),
-     # ('cacheHint','false'),
-     # ('orderByFields','FID%20ASC'),
-     # ('groupByFieldsForStatistics',''),
-     # ('outStatistics',''),
-     # ('having',''),
-     # ('resultOffset',0),
-     # ('resultRecordCount',50),
-     # ('sqlFormat','none'),
-     # ('pjson',''),
-     # ('token','')
+    # ('f', 'json'),
+    # ('limit', f'{limit}'),
+    # ('offset', f'{offset}'),
+    # ('where', '1=1'),
+    # ('objectIds',''),
+    # ('time',''),
+    # ('resultType','none'),
+    # ('outFields', '*'),
+    # ('returnIdsOnly','false'),
+    # ('returnUniqueIdsOnly','false'),
+    # ('returnCountOnly','false'),
+    # ('returnDistinctValues','false'),
+    # ('cacheHint','false'),
+    # ('orderByFields','FID%20ASC'),
+    # ('groupByFieldsForStatistics',''),
+    # ('outStatistics',''),
+    # ('having',''),
+    # ('resultOffset',0),
+    # ('resultRecordCount',50),
+    # ('sqlFormat','none'),
+    # ('pjson',''),
+    # ('token','')
     # )
 
     params = (
@@ -51,7 +51,7 @@ def get_canton_data() -> str:
         # print(f'features: {response_json['features']}')
         # print(f'uniqueIdField.name: {response_json['uniqueIdField.name']}')
         # print(f'uniqueIdField.isSystemMaintained: {response_json['uniqueIdField.isSystemMaintained']}')
-        
+
         return response_json
     except requests.exceptions.HTTPError as errh:
         print("Http Error:", errh)
@@ -69,11 +69,12 @@ def get_canton_data() -> str:
         print("exception")
         return None
 
+
 def get_canton_data_df():
 
     response = get_canton_data()
     df_response_json = pd.json_normalize(response['features'])
-    columnnames = [str.replace(col, 'attributes.','') for col in df_response_json.columns]
+    columnnames = [str.replace(col, 'attributes.', '') for col in df_response_json.columns]
     df_response_json.columns = columnnames
 
     df_response_json['Datum'] = pd.to_datetime(df_response_json['Datum'], unit='ms')
@@ -85,9 +86,11 @@ def get_canton_data_df():
     df_response_json.Verstorbene__kumuliert_ = df_response_json.Verstorbene__kumuliert_.astype('int')
     df_response_json.FID = df_response_json.FID.astype('int')
 
-    return df_response_json
+    df_cleaned = df_response_json[['Datum', 'Region', 'Neue_Faelle']]
+    df_cleaned = df_cleaned.groupby(['Region', 'Datum']).sum()
+
+    return df_cleaned
 
 
 if __name__ == '__main__':
     print(get_canton_data_df().head())
-
