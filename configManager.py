@@ -3,6 +3,8 @@ import logging
 import os
 
 """ ConfigManager handles the configuration files and provides access where needed. """
+
+
 class ConfigManager:
     __instance = None
 
@@ -10,6 +12,7 @@ class ConfigManager:
     __postgres_config = None
     __secret = None
     __server_config = None
+    __required_date_format = None
 
     @staticmethod
     def get_instance():
@@ -35,6 +38,7 @@ class ConfigManager:
             self.__postgres_config = config['postgres']
             self.__secret = config['secret']
             self.__server_config = config['server']
+            self.__required_date_format = str(config['requiredDateFormat'])
 
     def log_configfile_path(self):
         self.logger.info("ConfigFile-Path is: " + str(self.__configFilePath))
@@ -47,3 +51,6 @@ class ConfigManager:
 
     def get_server_config(self):
         return self.__server_config
+
+    def get_required_date_format(self):
+        return self.__required_date_format

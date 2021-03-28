@@ -14,5 +14,7 @@
     "debug": true,
     "host": "localhost",
     "port": 5000
-  }
+  },
+
+  "requiredDateFormat": "%Y-%m-%d"
 }
