@@ -2,10 +2,10 @@ from datetime import datetime
 from flask import jsonify, request, Blueprint
 from services.IncidenceService import IncidenceService
 
-incidences_controller = Blueprint('incidences', __name__)
+incidence_controller = Blueprint('incidence_controller', __name__)
 
 
-@incidences_controller.route("/", methods=['GET'])
+@incidence_controller.route("/incidences/", methods=['GET'])
 def get_all():
     date_from = request.args['dateFrom'] if 'dateFrom' in request.args else datetime.fromtimestamp(0)
     date_to = request.args['dateTo'] if 'dateTo' in request.args else datetime.today()
@@ -16,7 +16,7 @@ def get_all():
     return jsonify(incidences)
 
 
-@incidences_controller.route("/<bfs_nr>/", methods=['GET'])
+@incidence_controller.route("/incidences/<bfs_nr>/", methods=['GET'])
 def get(bfs_nr):
     date_from = request.args['dateFrom'] if 'dateFrom' in request.args else datetime.fromtimestamp(0)
     date_to = request.args['dateTo'] if 'dateTo' in request.args else datetime.today()

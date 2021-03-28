@@ -1,10 +1,10 @@
 from flask import jsonify, Blueprint
 from services.MunicipalityService import MunicipalityService
 
-municipalities_controller = Blueprint('municipalities', __name__)
+municipality_controller = Blueprint('municipality_controller', __name__)
 
 
-@municipalities_controller.route("/", methods=['GET'])
+@municipality_controller.route("/municipalities/", methods=['GET'])
 def get_all():
     #TODO: Validation and Errorhandling
 
@@ -12,7 +12,7 @@ def get_all():
     return jsonify(municipalities)
 
 
-@municipalities_controller.route("/<bfs_nr>/", methods=['GET'])
+@municipality_controller.route("/municipalities/<bfs_nr>/", methods=['GET'])
 def get(bfs_nr):
     #TODO: Validation and Errorhandling
 

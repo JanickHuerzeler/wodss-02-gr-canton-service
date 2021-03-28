@@ -1,10 +1,10 @@
 from configManager import ConfigManager
-from controllers.incidences.resource import incidences_controller
-from controllers.municipalities.resource import municipalities_controller
+from controllers.incidenceController import incidence_controller
+from controllers.municipalityController import municipality_controller
 from setup import app
 
-app.register_blueprint(incidences_controller, url_prefix='/incidences')
-app.register_blueprint(municipalities_controller, url_prefix='/municipalities')
+app.register_blueprint(incidence_controller)
+app.register_blueprint(municipality_controller)
 
 if __name__ == '__main__':
     server_config = ConfigManager.get_instance().get_server_config()
