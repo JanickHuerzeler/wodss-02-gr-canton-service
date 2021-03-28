@@ -1,0 +1,18 @@
+{
+  "postgres": {
+    "user": "postgres",
+    "pw":   "postgres",
+    "db":   "wodssCantonServiceGR",
+    "host": "localhost",
+    "port": "5432"
+  },
+
+  "secret": "mbx9qhpx6x4ghrtpt5ymozoet4hx9a87",
+  
+  "server": {
+    "development": true,
+    "debug": true,
+    "host": "localhost",
+    "port": 5000
+  }
+}
