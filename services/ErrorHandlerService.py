@@ -22,7 +22,7 @@ class ErrorHandlerService:
 
     # TBD
     @staticmethod
-    def check_date_sematic(date_from, date_to):
+    def check_date_semantic(date_from, date_to):
         if not date_from or not date_to:
             return True
 

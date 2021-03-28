@@ -19,7 +19,7 @@ def get_all():
         return 'Invalid format for parameter "dateFrom" (required: ' + df + ')', 400
     if not ErrorHandlerService.check_date_format(date_to):
         return 'Invalid format for parameter "dateTo" (required: ' + df + ')', 400
-    if not ErrorHandlerService.check_date_sematic(date_from, date_to):
+    if not ErrorHandlerService.check_date_semantic(date_from, date_to):
         return 'Invalid semantic in dates (required: dateFrom <= dateTo))', 400
 
     incidences = IncidenceService.get_all(date_from, date_to)
@@ -40,7 +40,7 @@ def get(bfs_nr):
         return 'Invalid format for parameter "dateFrom" (required: ' + df + ')', 400
     if not ErrorHandlerService.check_date_format(date_to):
         return 'Invalid format for parameter "dateTo" (required: ' + df + ')', 400
-    if not ErrorHandlerService.check_date_sematic(date_from, date_to):
+    if not ErrorHandlerService.check_date_semantic(date_from, date_to):
         return 'Invalid semantic in dates (required: dateFrom <= dateTo))', 400
 
     incidences = IncidenceService.get(bfs_nr, date_from, date_to)
