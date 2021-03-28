@@ -20,7 +20,7 @@ class ErrorHandlerService:
         except ValueError:
             return False
 
-    # TBD
+    # check if dateFrom is smaller or equal to dateTo
     @staticmethod
     def check_date_semantic(date_from, date_to):
         if not date_from or not date_to:
