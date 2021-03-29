@@ -25,7 +25,8 @@ conda activate WODSS
 - Create database `wodssCantonServiceGR`
 - User `postgres`, Password `postgres`
 - Create tables `python manage.py db upgrade`
-- Demodata `resources/demoData.sql`
+- Load table `municipality`
+    - Alternatively: Demodata `resources/demoData.sql`
 
 ### Schritt-für-Schritt Anleitung
 Nach der Installation von PostgreSQL können folgende Befehle ausgeführt werden:
@@ -50,9 +51,10 @@ Ansonsten, falls nur aktualisiert werden soll:
 ```ZSH / CMD
 python manage.py db upgrade
 ```
-Zurück im PSQL-Terminal können nun die Demo-Daten in die Tabellen eingefügt werden:
+
+Die `municipality`-Tabelle muss einmalig abgefüllt werden. Folgender Befehl startet den Import via CLI:
 ```ZSH / CMD
-\i resources/demoData.sql
+python fetch_municipality.py --save_to_db
 ```
 
 ## Build
