@@ -3,8 +3,8 @@ from flask_migrate import Migrate, MigrateCommand
 
 from setup import app, db
 
-from models import incidence
 from models import municipality
+from models import incidence
 
 migrate = Migrate(app, db)
 manager = Manager(app)

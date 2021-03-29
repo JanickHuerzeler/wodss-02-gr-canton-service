@@ -38,6 +38,15 @@ CREATE USER postgres
 Zu diesem Zeitpunkt ist die Datenbank und der User erstellt.
 
 In einem neuen Terminal/Konsole sollen nun die Tabellen aufgrund der Model-Klassen in Python erstellt werden:
+
+Falls DB neu erstellt werden soll:
+```ZSH / CMD
+python manage.py db init
+python manage.py db migrate
+python manage.py db upgrade
+```
+
+Ansonsten, falls nur aktualisiert werden soll: 
 ```ZSH / CMD
 python manage.py db upgrade
 ```
