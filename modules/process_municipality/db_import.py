@@ -48,7 +48,7 @@ def save_to_db():
     dict_db_cols = {'BFS_Nr': 'bfsNr', 'Gemeindename': 'name', 'Kanton': 'canton',
                     'Gesamtflaeche_in_km2': 'area', 'Einwohner': 'population', 'Bezirksname': 'region'}
 
-    df_db = df[dict_db_cols.keys()]
+    df_db = df[dict_db_cols.keys()].copy()
     df_db.rename(columns=dict_db_cols, inplace=True)
 
     df_db.to_sql('municipality', engine, if_exists='append', index=False)

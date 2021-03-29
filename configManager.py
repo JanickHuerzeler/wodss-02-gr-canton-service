@@ -13,6 +13,7 @@ class ConfigManager:
     __secret = None
     __server_config = None
     __required_date_format = None
+    __bfsCommunityBoothConfiguration = None
 
     @staticmethod
     def get_instance():
@@ -39,6 +40,7 @@ class ConfigManager:
             self.__secret = config['secret']
             self.__server_config = config['server']
             self.__required_date_format = str(config['requiredDateFormat'])
+            self.__bfsCommunityBoothConfiguration = config['bfsCommunityBoothConfiguration']
 
     def log_configfile_path(self):
         self.logger.info("ConfigFile-Path is: " + str(self.__configFilePath))
@@ -54,3 +56,6 @@ class ConfigManager:
 
     def get_required_date_format(self):
         return self.__required_date_format
+
+    def get_bfs_community_booth_configuration(self):
+        return self.__bfsCommunityBoothConfiguration

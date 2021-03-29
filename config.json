@@ -1,4 +1,9 @@
 {
+  "bfsCommunityBoothConfiguration": {
+    "dataSourcePostUrl": "https://www.agvchapp.bfs.admin.ch/de/state/results/xls?SnapshotDate=01.01.2021",
+    "dataSourceHtmlUrl": "https://www.agvchapp.bfs.admin.ch/de/communes/results?EntriesFrom=01.01.2021&EntriesTo=01.01.2021&UseDefaultDates=True&Canton=GR",
+    "excelFileName": "Gemeindestand.xlsx"
+  },
   "postgres": {
     "user": "postgres",
     "pw":   "postgres",
