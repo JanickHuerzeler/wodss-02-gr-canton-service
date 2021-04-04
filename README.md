@@ -79,3 +79,94 @@ conda env update --file resources/environment.yml
 ```
 
 `--prune` würde zusätzlich noch nicht mehr verwendete Libraries gleich entfernen.
+
+
+## Setup Live Environment (SWITCHengines)
+
+### Step 1 - Install all required APT and PIP packages
+``` ZSH / CMD
+sudo apt-get update
+sudo apt-get install git python-dev python3-pip ngnix build-essential postgresql postgresql-contrib
+sudo pip3 install uwsgi
+```
+
+### Step 2 - Install Anaconda
+``` ZSH / CMD
+sudo mkdir -p /opt
+sudo chown $USER /opt
+mkdir /opt/anaconda
+cd /opt/anaconda/
+wget https://repo.anaconda.com/archive/Anaconda3-2020.11-Linux-x86_64.sh
+bash Anaconda3-2020.11-Linux-x86_64.sh -u -b -p /opt/anaconda
+rm Anaconda3-2020.11-Linux-x86_64.sh
+export PATH=/opt/anaconda/bin:$PATH
+source /etc/environment && export PATH
+```
+
+### Step 3 - Clone Git Repository
+``` ZSH / CMD
+mkdir /opt/apps
+cd /opt/apps
+git clone https://github.com/JanickHuerzeler/wodss-02-gr-canton-service.git
+```
+
+### Step 4 - Create Virtual Conda Environment
+Because the virtual machine has insufficient memory, we first have to create a temporary 2GB swapfile
+``` ZSH / CMD
+sudo fallocate -l 2G /swapfile
+sudo chmod 600 /swapfile
+sudo mkswap /swapfile
+sudo swapon /swapfile
+```
+Now we can create the conda env using environment.yml 
+``` ZSH / CMD
+conda env create -f /opt/apps/wodss-02-gr-canton-service/resources/environment.yml
+source activate WODSS
+```
+
+### Step 5 - Setup PostgreSQL
+``` ZSH / CMD
+sudo -u postgres psql postgres
+CREATE DATABASE wodssCantonServiceGR;
+\password postgres (pw: postgres)
+\q
+cd /opt/apps/wodss-02-gr-canton-service
+python3 manage.py db upgrade
+
+sudo systemctl enable postgresql
+```
+
+### Step 6 - Setup Nginx
+First we have to open ports 80+443 on SWITCHEngines: https://bit.ly/3fN5UD0
+``` ZSH / CMD
+export DOMAIN=gr.corona-navigator.ch
+sudo tee /etc/nginx/sites-available/$DOMAIN <<EOF
+server {
+  listen 80;
+  listen [::]:80;
+  server_name localhost gr.corona-navigator.ch;
+
+  location / {
+    proxy_pass http://localhost:5000;
+  }
+}
+EOF
+
+sudo ln -s /etc/nginx/sites-available/$DOMAIN /etc/nginx/sites-enabled/$DOMAIN
+sudo systemctl enable nginx
+```
+### Step 7 - Setup canton service as a system service
+``` ZSH / CMD
+sudo tee /etc/systemd/system/wodss-02-gr-canton-service.service << EOF
+[Unit]
+Description=uWSGI instance to serve wodss-02-gr-canton-service
+
+[Service]
+ExecStart=/bin/bash -c 'cd /opt/apps/wodss-02-gr-canton-service && uwsgi -H /opt/anaconda/envs/WODSS resources/uwsgi.ini'
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+sudo systemctl enable wodss-02-gr-canton-service
+```
