@@ -9,6 +9,7 @@ from datetime import date
 # the api is limited to 2000 result items per call
 MAX_RESULT_COUNT_PER_REQUEST = 2000
 FIRST_DATE_MEASURED_BY_API = date(2020, 2, 26)
+AMOUNT_OF_DISTRICTS = 12
 
 def get_canton_data(take: int = 2000, offset=0) -> str:
     ''' 
@@ -79,7 +80,7 @@ def get_canton_data_df_all():
     currentDate = date.today()
     dateDelta = currentDate - FIRST_DATE_MEASURED_BY_API
     
-    loopInvariant = ((int)((12 * dateDelta.days) /MAX_RESULT_COUNT_PER_REQUEST))+2
+    loopInvariant = ((int)((AMOUNT_OF_DISTRICTS * dateDelta.days) /MAX_RESULT_COUNT_PER_REQUEST))+2
 
     try:
         while leaveLoop is False and currentRound < loopInvariant:
