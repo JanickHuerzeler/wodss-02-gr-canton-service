@@ -4,12 +4,16 @@ import pandas as pd
 # Specific implementation, no config files intended for "exchangeability".
 
 
-def get_canton_data() -> str:
+# the api is limited to 2000 results per call
+MAX_RESULT_COUNT_PER_REQUEST = 2000
+
+def get_canton_data(take: int = 2000, offset=0) -> str:
     ''' 
     Performs a query on the canton endpoint for receiving covid-19 data. See https://curl.trillworks.com/ for request usage.
     '''
     endpointUrl = 'https://services1.arcgis.com/YAuo6vcW85VPu7OE/ArcGIS/rest/services/Fallzahlen_Pro_Region/FeatureServer/0/query'
-
+    print(f'get_canton_data params: take: {take}, offset: {offset}')
+    
     # params = (
     # ('f', 'json'),
     # ('limit', f'{limit}'),
@@ -39,9 +43,12 @@ def get_canton_data() -> str:
         ('f', 'json'),
         ('where', '1=1'),
         ('outFields', '*'),
+        ('resultOffset', f'{offset}'),
+        ('resultRecordCount', f'{take}')
     )
     try:
         response = requests.get(endpointUrl, params=params)
+        print(response.url)
         response_json = response.json()
 
         # print(f'objectIdFieldName: { response_json['objectIdFieldName'] }')
@@ -69,6 +76,70 @@ def get_canton_data() -> str:
         print("exception")
         return None
 
+def get_canton_data_internal(take: int, offset: int):
+    response = get_canton_data(take, offset)
+    df_response_json = pd.json_normalize(response['features'])
+    if not df_response_json.empty:
+
+        columnnames = [str.replace(col, 'attributes.', '') for col in df_response_json.columns]
+        df_response_json.columns = columnnames
+
+        df_response_json['Datum'] = pd.to_datetime(df_response_json['Datum'], unit='ms')
+        df_response_json.Region = df_response_json.Region.astype('category')
+        df_response_json.Neue_Faelle = df_response_json.Neue_Faelle.astype('int')
+        df_response_json.Aktive_Faelle = df_response_json.Aktive_Faelle.astype('int')
+        df_response_json.Faelle__kumuliert_ = df_response_json.Faelle__kumuliert_.astype('int')
+        df_response_json.Verstorbene = df_response_json.Verstorbene.astype('int')
+        df_response_json.Verstorbene__kumuliert_ = df_response_json.Verstorbene__kumuliert_.astype('int')
+        df_response_json.FID = df_response_json.FID.astype('int')
+        df_cleaned = df_response_json[['Datum', 'Region', 'Neue_Faelle', 'FID']]
+        # df_cleaned = df_cleaned.groupby(['Region', 'Datum']).sum() # Grouping will happen at later point
+
+        return df_cleaned, df_cleaned.FID
+
+def get_canton_data_df_loop():
+
+    max_FID = MAX_RESULT_COUNT_PER_REQUEST
+    currentRound = 0
+    cols = ['Datum', 'Region', 'Neue_Faelle']
+    response = pd.DataFrame(columns=cols)
+    leave_loop = False
+    
+    try:
+        while not leave_loop and currentRound < 5:
+            print(response.size)
+            print('Params:')
+            
+            print(f'Take: {MAX_RESULT_COUNT_PER_REQUEST}')
+            print(f'Offset: {currentRound*MAX_RESULT_COUNT_PER_REQUEST}')
+            currentData, resultCount = get_canton_data_internal(MAX_RESULT_COUNT_PER_REQUEST, currentRound * MAX_RESULT_COUNT_PER_REQUEST)
+            print(resultCount)
+            response = response.append(currentData[cols],ignore_index=True)
+            # max_fid = max(currentData.FID)
+            print(f'MAX_FID: {max_FID}')
+            leave_loop = max_FID % MAX_RESULT_COUNT_PER_REQUEST != 0 == True
+            currentRound = currentRound + 1
+    except: 
+        print("something went wrong while fetching from the cases api")
+    print(max(response.Datum))
+    # response = get_canton_data_internal()
+    # df_response_json = pd.json_normalize(response['features'])
+    # columnnames = [str.replace(col, 'attributes.', '') for col in df_response_json.columns]
+    # df_response_json.columns = columnnames
+
+    # df_response_json['Datum'] = pd.to_datetime(df_response_json['Datum'], unit='ms')
+    # df_response_json.Region = df_response_json.Region.astype('category')
+    # df_response_json.Neue_Faelle = df_response_json.Neue_Faelle.astype('int')
+    # df_response_json.Aktive_Faelle = df_response_json.Aktive_Faelle.astype('int')
+    # df_response_json.Faelle__kumuliert_ = df_response_json.Faelle__kumuliert_.astype('int')
+    # df_response_json.Verstorbene = df_response_json.Verstorbene.astype('int')
+    # df_response_json.Verstorbene__kumuliert_ = df_response_json.Verstorbene__kumuliert_.astype('int')
+    # df_response_json.FID = df_response_json.FID.astype('int')
+    # df_cleaned = df_response_json[['Datum', 'Region', 'Neue_Faelle']]
+    # # df_cleaned = df_cleaned.groupby(['Region', 'Datum']).sum() # Grouping will happen at later point
+
+    # return df_cleaned
+    return response
 
 def get_canton_data_df():
 
