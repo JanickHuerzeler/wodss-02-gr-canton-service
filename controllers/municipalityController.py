@@ -14,7 +14,7 @@ def get_all():
 @municipality_controller.route("/municipalities/<bfs_nr>/", methods=['GET'])
 def get(bfs_nr):
     # check bfs_nr format
-    if not ErrorHandlerService.check_bfs_nr(bfs_nr):
+    if not ErrorHandlerService.check_bfs_nr_format(bfs_nr):
         return 'Invalid format for parameter "bfsNr"', 400
 
     municipalities = MunicipalityService.get(bfs_nr)
