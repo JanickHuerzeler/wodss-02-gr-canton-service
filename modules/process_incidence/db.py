@@ -6,7 +6,7 @@ from datetime import datetime, timedelta
 
 def save_to_db(df_incidences):
     """
-    Writes the municipalities of GR into the database with their corresponding info about region, area and population.
+    Writes the incidences of GR into the database
     """
 
     engine = db.get_engine()

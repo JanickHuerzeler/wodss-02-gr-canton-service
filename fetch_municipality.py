@@ -5,7 +5,9 @@
 # https://docs.python.org/3/library/argparse.html
 
 import argparse
-import modules.process_municipality.db_import as mun
+import modules.process_municipality.db as mdb
+import modules.process_municipality.process_municipality_data as pmd
+
 
 parser = argparse.ArgumentParser(
     description='Entry point for municipality fetching')
@@ -18,7 +20,7 @@ save_to_db: bool = args.save_to_db
 
 print('save_to_db:', save_to_db)
 
+df_municipalities = pmd.get_municipalities()
+
 if(save_to_db):
-    mun.save_to_db()
-else:
-    mun.get_municipalities()
+    mdb.save_to_db(df_municipalities)

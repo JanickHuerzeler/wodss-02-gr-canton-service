@@ -1,8 +1,6 @@
 import pandas as pd
-from sqlalchemy import create_engine
 import modules.process_municipality.fetch_municipalities as fmp
 import modules.process_municipality.fetch_cantons_metadata as fcm
-from setup import db
 
 
 def get_municipalities() -> pd.DataFrame:
@@ -35,20 +33,3 @@ def get_municipalities() -> pd.DataFrame:
         lambda row: row['Gesamtflaeche_in_km2']/dict_bezirk_flaechen[row['Bezirksname']], axis=1)
 
     return df_all
-
-
-def save_to_db():
-    """
-    Writes the municipalities of GR into the database with their corresponding info about region, area and population.
-    """
-
-    engine = db.get_engine()
-    df = get_municipalities().reset_index()
-
-    dict_db_cols = {'BFS_Nr': 'bfsNr', 'Gemeindename': 'name', 'Kanton': 'canton',
-                    'Gesamtflaeche_in_km2': 'area', 'Einwohner': 'population', 'Bezirksname': 'region'}
-
-    df_db = df[dict_db_cols.keys()].copy()
-    df_db.rename(columns=dict_db_cols, inplace=True)
-
-    df_db.to_sql('municipality', engine, if_exists='append', index=False)
