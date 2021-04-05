@@ -17,3 +17,5 @@ dependencies:
   - nbconvert
   - lxml
   - xlrd
+  - pytest
+  - coverage

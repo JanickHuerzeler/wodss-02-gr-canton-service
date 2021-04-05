@@ -80,6 +80,39 @@ conda env update --file resources/environment.yml
 
 `--prune` würde zusätzlich noch nicht mehr verwendete Libraries gleich entfernen.
 
+## Unit Tests
+Die Unit Tests können mit folgendem Befehl im Hauptverzeichnis ausgeführt werden:
+
+``` zsh / CMD
+pytest
+```
+
+### Coverage
+``` zsh / CMD
+coverage run -m pytest
+```
+oder
+``` zsh / CMD
+coverage report -m
+```
+oder
+``` zsh / CMD
+coverage html
+```
+und dann: 
+
+Windows
+``` zsh / CMD
+cd htmlcov
+start index.html
+```
+MacOS X
+``` zsh / CMD
+cd htmlcov
+open index.html
+```
+
+
 
 ## Setup Live Environment (SWITCHengines)
 
