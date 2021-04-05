@@ -35,12 +35,13 @@ if full_dataset:
     df_corona_cases = fcd.get_canton_data_df(datetime(2020, 2, 26, 0, 0), now)
 else:
     # Check the last fetch date in DB
-    last_fetch_date = pcdi.get_max_import_date()
+    last_fetch_date = pcdi.get_last_import_date()
     last_fetch_date = datetime(last_fetch_date.year, last_fetch_date.month, last_fetch_date.day, 0, 0)
     # Fetch difference to now
     df_corona_cases = fcd.get_canton_data_df(last_fetch_date + timedelta(days=1), now)
     df_db_corona_cases = pcdi.get_last_14_imported_days(last_fetch_date)
 
+# Do not proceed if there are no new datasets...
 if df_corona_cases is not None:
     # Save API case count for validation
     sum_cases_recevied_by_api = df_corona_cases['Neue_Faelle'].sum()
@@ -59,8 +60,21 @@ if df_corona_cases is not None:
     # Save case count after distribution to municipalities for validation
     sum_cases_after_municipality_distribution = df_all_cases_assigned_to_regions['Neue_Faelle_Gemeinde'].sum()
 
+    # If incremental import is executed, prepend the last 14 days from DB to the new days
+    if full_dataset == False:
+        df_all_cases_distributed_to_municipalities = df_db_corona_cases.append(
+            df_all_cases_distributed_to_municipalities)
+        df_all_cases_distributed_to_municipalities.reset_index()
+
     # Calcuate cumsum and incidence of 14 days
     df_cumsum_and_incidence = pcd.calculate_cumsum_and_incidence(df_all_cases_distributed_to_municipalities)
+
+    # If incremental import is executed, filter all days which are already in DB
+    if full_dataset == False:
+        df_cumsum_and_incidence['Datum'] = pd.to_datetime(df_cumsum_and_incidence['Datum'])
+        df_cumsum_and_incidence = df_cumsum_and_incidence[df_cumsum_and_incidence['Datum'] > last_fetch_date]
+
+    print(df_cumsum_and_incidence)
 
     print("Sum of cases received by GR API: {}".format(sum_cases_recevied_by_api))
     print("Sum of cases after distribution of cases without region: {}".format(sum_cases_after_assigment_of_without_region))

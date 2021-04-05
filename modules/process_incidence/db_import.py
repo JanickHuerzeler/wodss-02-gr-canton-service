@@ -22,7 +22,7 @@ def save_to_db(df_incidences):
     df_db.to_sql('incidence', engine, if_exists='append', index=False)
 
 
-def get_max_import_date():
+def get_last_import_date():
     max_date = None
     sql = "SELECT max(date) AS max_date FROM public.incidence"
 
@@ -35,14 +35,30 @@ def get_max_import_date():
 
 
 def get_last_14_imported_days(last_import_date) -> pd.DataFrame:
-    sql = "SELECT * FROM public.incidence WHERE date BETWEEN '{}' AND '{}'".format(
-        last_import_date - timedelta(days=14), last_import_date)
+    sql = """   SELECT incidence."bfsNr",
+                    incidence.date,
+                    incidence.cases, 
+                    municipality.population,
+                    municipality.area,
+                    municipality.name,
+                    municipality.region,
+                    municipality.canton
+                FROM public.incidence
+                LEFT JOIN public.municipality ON (incidence."bfsNr" = municipality."bfsNr")
+                WHERE date BETWEEN '{}' AND '{}' ORDER BY incidence.date ASC""".format(last_import_date - timedelta(days=14), last_import_date)
 
     df_db = pd.read_sql_query(sql, db.get_engine())
-    print(sql)
 
-    dict_db_cols = {'bfsNr': 'BFS_Nr', 'date': 'Datum', 'incidence': '14d_Incidence',
-                    'cases': 'Neue_Faelle_Gemeinde', 'cases_cumsum_14d': 'Rolling_Sum'}
+    dict_db_cols = {
+        'population': 'Einwohner',
+        'area': 'Gesamtflaeche_in_km2',
+        'name': 'Gemeindename',
+        'region': 'Bezirksname',
+        'canton': 'Kanton',
+        'bfsNr': 'BFS_Nr',
+        'date': 'Datum',
+        'cases': 'Neue_Faelle_Gemeinde'
+    }
     df = df_db[dict_db_cols.keys()].copy()
     df.rename(columns=dict_db_cols, inplace=True)
 
