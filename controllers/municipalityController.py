@@ -1,8 +1,9 @@
 from flask import jsonify, Blueprint
+
 from services.MunicipalityService import MunicipalityService
 from services.ErrorHandlerService import ErrorHandlerService
 
-municipality_controller = Blueprint('municipality_controller', __name__)
+municipality_controller = Blueprint('municipality_controller', __name__, template_folder='templates')
 
 
 @municipality_controller.route("/municipalities/", methods=['GET'])

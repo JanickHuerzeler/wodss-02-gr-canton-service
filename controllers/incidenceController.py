@@ -4,7 +4,7 @@ from services.IncidenceService import IncidenceService
 from services.ErrorHandlerService import ErrorHandlerService
 from configManager import ConfigManager
 
-incidence_controller = Blueprint('incidence_controller', __name__)
+incidence_controller = Blueprint('incidence_controller', __name__, template_folder='templates')
 
 df = ConfigManager.get_instance().get_required_date_format()
 

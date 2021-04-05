@@ -3,7 +3,7 @@
 Kantonsservice für den Workshop in der Vertiefung "Distributed Software Systems" (WODSS). Stellt für den Kanton Graubünden die Corona- sowie Gemeindedaten gemäss API Definition zur Verfügung.
 
 
-
+___
 ## Prerequisites
 - Miniconda
 - Python 3.9
@@ -19,7 +19,7 @@ Das soeben erstellte Conda Environment muss dabei noch aktiviert werden:
 ``` zsh /CMD
 conda activate WODSS
 ```
-
+___
 ## Database
 - Install PostgreSQL
 - Create database `wodssCantonServiceGR`
@@ -56,15 +56,15 @@ Die `municipality`-Tabelle muss einmalig abgefüllt werden. Folgender Befehl sta
 ```ZSH / CMD
 python fetch_municipality.py --save_to_db
 ```
-
+___
 ## Build
 TODO: FLASK_APP Variable setzen, aktuell via "Play" auf app.py
 ``` ZSH / CMD
 conda activate WODSS
 ```
-
+___
 ## Test
-
+___
 ## Installieren von neuen Libraries
 Wird eine Library neu installiert (`conda install XYZ`), muss diese im `resources/environment.yml` nachgeführt werden.
 Dies kann manuell geschehen, am einfachsten durch Kopieren der Ausgabe von folgendem Befehl:
@@ -113,10 +113,16 @@ open index.html
 ```
 
 
+___
+## Live Environment
 
-## Setup Live Environment (SWITCHengines)
-
-### Step 1 - Install all required APT and PIP packages
+#### **Domains** ``corona-navigator.ch`` ``gr.corona-navigator.ch``
+#### **Deploy latest branch** ``~/deploy.sh``
+#### **Git Repo Path** ``/opt/apps/wodss-02-gr-canton-service/``
+#### **Restart GR-Service** ``sudo systemctl restart wodss-02-gr-canton-service.service``
+___
+### Setup Live Server  (SWITCHengines)
+#### Step 1 - Install all required APT and PIP packages
 ``` ZSH / CMD
 sudo apt-get update
 sudo apt-get install git python-dev python3-pip ngnix build-essential postgresql postgresql-contrib
@@ -170,14 +176,30 @@ sudo systemctl enable postgresql
 ```
 
 ### Step 6 - Setup Nginx
-First we have to open ports 80+443 on SWITCHEngines: https://bit.ly/3fN5UD0
+First we have to open ports 80+443 on SWITCHEngine: https://bit.ly/3fN5UD0
 ``` ZSH / CMD
-export DOMAIN=gr.corona-navigator.ch
+export DOMAIN=corona-navigator.ch
+
 sudo tee /etc/nginx/sites-available/$DOMAIN <<EOF
 server {
   listen 80;
   listen [::]:80;
-  server_name localhost gr.corona-navigator.ch;
+  server_name localhost $DOMAIN www.$DOMAIN;
+
+  root /var/www/html;
+  index index.html index.htm;
+
+  location / {
+    try_files $uri $uri/ =404;
+  }
+}
+EOF
+
+sudo tee /etc/nginx/sites-available/gr.$DOMAIN <<EOF
+server {
+  listen 80;
+  listen [::]:80;
+  server_name localhost gr.$DOMAIN;
 
   location / {
     proxy_pass http://localhost:5000;
@@ -186,8 +208,10 @@ server {
 EOF
 
 sudo ln -s /etc/nginx/sites-available/$DOMAIN /etc/nginx/sites-enabled/$DOMAIN
+sudo ln -s /etc/nginx/sites-available/gr.$DOMAIN /etc/nginx/sites-enabled/gr.$DOMAIN
 sudo systemctl enable nginx
 ```
+
 ### Step 7 - Setup canton service as a system service
 ``` ZSH / CMD
 sudo tee /etc/systemd/system/wodss-02-gr-canton-service.service << EOF
@@ -203,3 +227,41 @@ EOF
 
 sudo systemctl enable wodss-02-gr-canton-service
 ```
+
+### Step 8 - Setup SSL
+``` ZSH / CMD
+# Ensure that the version of snapd is up to date
+sudo snap install core; sudo snap refresh core
+
+# Install Certbot
+sudo snap install --classic certbot
+
+# Prepare the Certbot command
+sudo ln -s /snap/bin/certbot /usr/bin/certbot
+
+# Confirm plugin containment level
+sudo snap set certbot trust-plugin-with-root=ok
+
+# Create Certificate
+sudo certbot run -a manual -i nginx -d gr.corona-navigator.ch
+sudo certbot run -a manual -i nginx -d corona-navigator.ch -d www.corona-navigator.ch
+```
+
+### Step 9 (optional) - Setup FTP
+First we have to open ports 20-21 + 4242-4243 on SWITCHEngine: https://bit.ly/3fN5UD0
+``` ZSH / CMD
+sudo apt-get update
+sudo apt install vsftpd
+sudo useradd -m ftpuser
+sudo passwd ftpuser
+sudo systemctl enable vsftpd
+sudo vi /etc/vsftp.conf
+add following
+  write_enable=YES
+  pasv_enable=YES
+  pasv_addr_resolve=YES
+  pasv_address=corona-navigator.ch
+  pasv_min_port=4242
+  pasv_max_port=4243
+```
+
