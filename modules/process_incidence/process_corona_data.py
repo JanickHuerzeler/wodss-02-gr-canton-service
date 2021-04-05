@@ -157,7 +157,7 @@ def calculate_cumsum_and_incidence(df_cases_distributed_per_municipality):
         series_einwohner = df_cases_distributed_per_municipality[df_cases_distributed_per_municipality['Gemeindename']
                                                                  == gemeinde]['Einwohner']
         # Calcucate incidence based on rolling_sum and einwohner series over the whole series
-        series_incidence = (series_rolling_sum / series_einwohner) * INCIDENCE_POPULATION_REFERENCE
+        series_incidence = calculate_incidence(series_rolling_sum, series_einwohner)
 
         # Create rolling sum dataframe
         df_rolling_sum = pd.DataFrame(columns=['Rolling_Sum'])
@@ -172,3 +172,7 @@ def calculate_cumsum_and_incidence(df_cases_distributed_per_municipality):
         df_cases_distributed_per_municipality.update(df_incidence)
 
     return df_cases_distributed_per_municipality
+
+def calculate_incidence(series_rolling_sum: pd.Series, series_population: pd.Series):
+    return (series_rolling_sum / series_population) * INCIDENCE_POPULATION_REFERENCE
+
