@@ -13,6 +13,7 @@
   },
 
   "secret": "mbx9qhpx6x4ghrtpt5ymozoet4hx9a87",
+  "application_root": "/v1",
 
   "server": {
     "development": true,
