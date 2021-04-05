@@ -32,13 +32,13 @@ now = datetime.now()
 now = now.replace(hour=0, minute=0, second=0, microsecond=0)
 
 if full_dataset:
-    df_corona_cases = fcd.get_canton_data_df(datetime(2020, 2, 26, 0, 0), now)
+    df_corona_cases = fcd.get_corona_cases(datetime(2020, 2, 26, 0, 0), now)
 else:
     # Check the last fetch date in DB
     last_fetch_date = pcdi.get_last_import_date()
     last_fetch_date = datetime(last_fetch_date.year, last_fetch_date.month, last_fetch_date.day, 0, 0)
     # Fetch difference to now
-    df_corona_cases = fcd.get_canton_data_df(last_fetch_date + timedelta(days=1), now)
+    df_corona_cases = fcd.get_corona_cases(last_fetch_date + timedelta(days=1), now)
     df_db_corona_cases = pcdi.get_last_14_imported_days(last_fetch_date)
 
 # Do not proceed if there are no new datasets...

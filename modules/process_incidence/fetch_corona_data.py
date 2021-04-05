@@ -10,7 +10,7 @@ MAX_DAYS_PER_REQUEST = 166
 MAX_RESULT_ROWS = 1992
 
 
-def get_canton_data(dateFrom, dateTo) -> str:
+def fetch_corona_data(dateFrom, dateTo) -> str:
     ''' 
     Performs a query on the canton endpoint for receiving covid-19 data. See https://curl.trillworks.com/ for request usage.
     '''
@@ -70,7 +70,7 @@ def get_canton_data(dateFrom, dateTo) -> str:
         return None
 
 
-def get_canton_data_df(dateFrom, dateTo) -> pd.DataFrame:
+def get_corona_cases(dateFrom, dateTo) -> pd.DataFrame:
 
     df_cleaned = pd.DataFrame()
 
@@ -78,7 +78,7 @@ def get_canton_data_df(dateFrom, dateTo) -> pd.DataFrame:
 
         print("Fetching cases from API from '{}' to '{}'".format(
             dateFrom, dateFrom + timedelta(days=MAX_DAYS_PER_REQUEST) if dateFrom + timedelta(days=MAX_DAYS_PER_REQUEST) < dateTo else dateTo))
-        response = get_canton_data(dateFrom, dateTo)
+        response = fetch_corona_data(dateFrom, dateTo)
         df_response_json = pd.json_normalize(response['features'])
 
         if df_response_json.empty:

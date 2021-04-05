@@ -1,13 +1,13 @@
 import pandas as pd
 from sqlalchemy import create_engine
-import fetchutils.fetch_municipalities as fmp
-import fetchutils.fetch_cantons_metadata as fcm
+import modules.process_municipality.fetch_municipalities as fmp
+import modules.process_municipality.fetch_cantons_metadata as fcm
 from setup import db
 
 
 def get_municipalities() -> pd.DataFrame:
     """Returns pandas DataFrame
-    
+
     All municipalities of GR with info about region, area and population.
     """
 
