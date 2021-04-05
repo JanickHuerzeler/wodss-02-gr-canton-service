@@ -92,10 +92,6 @@ conda activate WODSS
 
 ---
 
-## Test
-
----
-
 ## Installieren von neuen Libraries
 
 Wird eine Library neu installiert (`conda install XYZ`), muss diese im `resources/environment.yml` nachgeführt werden.
@@ -113,13 +109,17 @@ conda env update --file resources/environment.yml
 
 `--prune` würde zusätzlich noch nicht mehr verwendete Libraries gleich entfernen.
 
+---
 ## Unit Tests
 
+Als Test Framework wird `pytest` verwendet.
 Die Unit Tests können mit folgendem Befehl im Hauptverzeichnis ausgeführt werden:
 
 ```zsh / CMD
 pytest
 ```
+
+Visual Studio Code bietet einen integrierten Test-Explorer an, der auch pytest unterstützt. Dazu muss die Test Discovery gemäss [Anleitung](https://code.visualstudio.com/docs/python/testing#_test-discovery) eingerichtet werden. Als Test Framework wird logischerweise `pytest` ausgewählt und als Test Directory `tests`.
 
 ### Coverage
 
