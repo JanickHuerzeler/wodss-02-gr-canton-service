@@ -1,0 +1,44 @@
+#https://editor.swagger.io/
+swagger: "2.0"
+info:
+  description: "Canton Service GR"
+  version: "1.0.0"
+  title: "Kantonsservice GR"
+host: "gr.corona-navigator.ch"
+basePath: "/v1"
+
+schemes:
+- "https"
+paths:
+  /incidences/:
+    get:
+      tags:
+      - "incidences"
+      summary: "Liefert alle vorhandenen Datensätze aller Gemeinden"
+      responses:
+        "200":
+          description: "OK"
+  /incidences/bfsNr/:
+    get:
+      tags:
+      - "incidences"
+      summary: "Liefert die Inzidenz für eine spezifische Gemeinde"
+      responses:
+        "200":
+          description: "OK"
+  /municipalities:
+    get:
+      tags:
+      - "municipalities"
+      summary: "Liefert alle im Kantonsservice verfügbaren Gemeinden "
+      responses:
+        "200":
+          description: "OK"
+  /municipalities/bfsNr:
+    get:
+      tags:
+      - "municipalities"
+      summary: "Liefert für eine verfügbare Gemeinde"
+      responses:
+        "200":
+          description: "OK"
