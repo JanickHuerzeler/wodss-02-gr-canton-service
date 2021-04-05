@@ -21,9 +21,6 @@ def get_municipalities_df_with_file_check(forceUrlDownload: bool = False) -> pd.
     # declare df_municipalities for later assignment
     df_municipalities = None
 
-    # output
-
-    # excel_file_path = os.path.abspath(os.path.join(os.path.dirname( __file__ ),'..','..','resources','municipality_data', cfgm['excelFileName']))
     excel_file_path = os.path.abspath(os.path.join('resources','municipality_data', cfgm['excelFileName']))
 
     # if excel file does not exist, download and save it previously
