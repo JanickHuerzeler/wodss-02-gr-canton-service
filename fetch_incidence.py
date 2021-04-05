@@ -10,8 +10,8 @@ import pandas as pd
 from datetime import datetime, timedelta
 import modules.process_incidence.fetch_corona_data as fcd
 import modules.process_incidence.process_corona_data as pcd
-import modules.process_municipality.db_import as mun
-import modules.process_incidence.db_import as pcdi
+import modules.process_municipality.process_municipality_data as pmd
+import modules.process_incidence.db as idb
 
 
 parser = argparse.ArgumentParser(
@@ -35,11 +35,11 @@ if full_dataset:
     df_corona_cases = fcd.get_corona_cases(datetime(2020, 2, 26, 0, 0), now)
 else:
     # Check the last fetch date in DB
-    last_fetch_date = pcdi.get_last_import_date()
+    last_fetch_date = idb.get_last_import_date()
     last_fetch_date = datetime(last_fetch_date.year, last_fetch_date.month, last_fetch_date.day, 0, 0)
     # Fetch difference to now
     df_corona_cases = fcd.get_corona_cases(last_fetch_date + timedelta(days=1), now)
-    df_db_corona_cases = pcdi.get_last_14_imported_days(last_fetch_date)
+    df_db_corona_cases = idb.get_last_14_imported_days(last_fetch_date)
 
 # Do not proceed if there are no new datasets...
 if df_corona_cases is not None:
@@ -47,7 +47,7 @@ if df_corona_cases is not None:
     sum_cases_recevied_by_api = df_corona_cases['Neue_Faelle'].sum()
 
     # Get all municipalities
-    df_municipality = mun.get_municipalities()
+    df_municipality = pmd.get_municipalities()
     # Assign cases without region
     df_all_cases_assigned_to_regions = pcd.distribute_cases_without_region(df_municipality, df_corona_cases)
     # Save case count after assignment of cases wihtout region for validation
@@ -74,12 +74,10 @@ if df_corona_cases is not None:
         df_cumsum_and_incidence['Datum'] = pd.to_datetime(df_cumsum_and_incidence['Datum'])
         df_cumsum_and_incidence = df_cumsum_and_incidence[df_cumsum_and_incidence['Datum'] > last_fetch_date]
 
-    print(df_cumsum_and_incidence)
-
     print("Sum of cases received by GR API: {}".format(sum_cases_recevied_by_api))
     print("Sum of cases after distribution of cases without region: {}".format(sum_cases_after_assigment_of_without_region))
     print("Sum of cases after distribution from region to municipalities: {}".format(
         sum_cases_after_municipality_distribution))
 
     if(save_to_db):
-        pcdi.save_to_db(df_cumsum_and_incidence)
+        idb.save_to_db(df_cumsum_and_incidence)
