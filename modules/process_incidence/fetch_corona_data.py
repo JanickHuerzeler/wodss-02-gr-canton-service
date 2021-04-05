@@ -43,7 +43,7 @@ def get_canton_data(dateFrom, dateTo) -> str:
 
     params = (
         ('f', 'json'),
-        ('where', "(Datum >= timestamp '{}') AND (Datum <= timestamp '{}')".format(dateFrom, dateTo)),
+        ('where', "(Datum >= timestamp '{}') AND (Datum < timestamp '{}')".format(dateFrom, dateTo)),
         ('outFields', 'Datum,Region,Neue_Faelle'),
         ('resultRecordCount', MAX_RESULT_ROWS),  # max value
         ('resultOffset', 0),
@@ -75,10 +75,16 @@ def get_canton_data_df(dateFrom, dateTo) -> pd.DataFrame:
     df_cleaned = pd.DataFrame()
 
     while dateFrom <= dateTo:
+
         print("Fetching cases from API from '{}' to '{}'".format(
-            dateFrom, dateFrom + timedelta(days=MAX_DAYS_PER_REQUEST)))
+            dateFrom, dateFrom + timedelta(days=MAX_DAYS_PER_REQUEST) if dateFrom + timedelta(days=MAX_DAYS_PER_REQUEST) < dateTo else dateTo))
         response = get_canton_data(dateFrom, dateTo)
         df_response_json = pd.json_normalize(response['features'])
+
+        if df_response_json.empty:
+            print('Nothing to do')
+            return None
+
         columnnames = [str.replace(col, 'attributes.', '') for col in df_response_json.columns]
         df_response_json.columns = columnnames
 
