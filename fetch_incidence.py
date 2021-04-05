@@ -11,6 +11,7 @@ from datetime import datetime, timedelta
 import modules.process_incidence.fetch_corona_data as fcd
 import modules.process_incidence.process_corona_data as pcd
 import modules.process_municipality.db_import as mun
+import modules.process_incidence.db_import as pcdi
 
 
 parser = argparse.ArgumentParser(
@@ -62,7 +63,5 @@ print("Sum of cases after distribution of cases without region: {}".format(sum_c
 print("Sum of cases after distribution from region to municipalities: {}".format(sum_cases_after_municipality_distribution))
 
 
-# if(save_to_db):
-#    mun.save_to_db()
-# else:
-#    mun.get_municipalities()
+if(save_to_db):
+    pcdi.save_to_db(df_cumsum_and_incidence)
