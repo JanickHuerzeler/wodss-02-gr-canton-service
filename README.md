@@ -116,10 +116,12 @@ open index.html
 ___
 ## Live Environment
 
-#### **Domains** ``corona-navigator.ch`` ``gr.corona-navigator.ch``
+#### **URLs** ``corona-navigator.ch`` ``gr.corona-navigator.ch/v1/``
 #### **Deploy latest branch** ``~/deploy.sh``
 #### **Git Repo Path** ``/opt/apps/wodss-02-gr-canton-service/``
 #### **Restart GR-Service** ``sudo systemctl restart wodss-02-gr-canton-service.service``
+#### **Conda Env Update** ``conda env update --file /opt/apps/wodss-02-gr-canton-service/resources/environment.yml``
+(for ``conda env update`` a temporary 2GB swapfile must be created first)
 ___
 ### Setup Live Server  (SWITCHengines)
 #### Step 1 - Install all required APT and PIP packages
@@ -156,6 +158,8 @@ sudo fallocate -l 2G /swapfile
 sudo chmod 600 /swapfile
 sudo mkswap /swapfile
 sudo swapon /swapfile
+Shorthander:
+sudo fallocate -l 2G /swapfile && sudo chmod 600 /swapfile && sudo mkswap /swapfile && sudo swapon /swapfile
 ```
 Now we can create the conda env using environment.yml 
 ``` ZSH / CMD
