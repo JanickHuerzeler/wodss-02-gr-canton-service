@@ -130,9 +130,9 @@ def distribute_region_cases_to_municipalities(df_municipalities, df_municipality
     return df_cases_distributed_per_gemeinde
 
 
-def get_choices_for_faelle(geminden, faelle: int, flaeche):
-    # Choose which BFSNrs (aus lst_gemeinden_plessur), get how many of the anzahl_faelle
-    random_choices = np.random.choice(geminden, faelle, p=flaeche)
+def get_choices_for_faelle(gemeinden, faelle: int, flaeche):
+    # Choose which BFSNrs (as passed in list 'gemeinden'), get how many of the faelle
+    random_choices = np.random.choice(gemeinden, faelle, p=flaeche)
     # Count the random choices
     counter = collections.Counter(random_choices)
     # Get the number of choices our "current choice" has got
