@@ -14,6 +14,7 @@ class ConfigManager:
     __server_config = None
     __required_date_format = None
     __bfsCommunityBoothConfiguration = None
+    __cantonMetadataConfiguration = None
     __application_root = None
 
     @staticmethod
@@ -42,6 +43,7 @@ class ConfigManager:
             self.__server_config = config['server']
             self.__required_date_format = str(config['requiredDateFormat'])
             self.__bfsCommunityBoothConfiguration = config['bfsCommunityBoothConfiguration']
+            self.__cantonMetadataConfiguration = config['cantonMetadataConfiguration']
             self.__application_root = config['application_root']
 
 
@@ -62,6 +64,9 @@ class ConfigManager:
 
     def get_bfs_community_booth_configuration(self):
         return self.__bfsCommunityBoothConfiguration
+
+    def get_canton_metadata_configuration(self):
+        return self.__cantonMetadataConfiguration
 
     def get_application_root(self):
         return self.__application_root
