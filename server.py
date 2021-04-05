@@ -9,6 +9,7 @@ application_root = ConfigManager.get_instance().get_application_root()
 
 app.register_blueprint(incidence_controller, url_prefix=application_root)
 app.register_blueprint(municipality_controller, url_prefix=application_root)
+app.register_blueprint(swaggerui_controller, url_prefix=application_root)
 
 
 if __name__ == '__main__':

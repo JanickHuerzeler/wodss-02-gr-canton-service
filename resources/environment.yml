@@ -8,6 +8,7 @@ dependencies:
   - flask-sqlalchemy
   - flask-script
   - flask-migrate
+  - flask-swagger-ui
   - psycopg2
   - requests
   - autopep8
