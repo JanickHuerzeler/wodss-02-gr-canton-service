@@ -14,11 +14,11 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "http://127.0.0.1:5000/incidences/",
+              "raw": "http://127.0.0.1:5000/v1/incidences/",
               "protocol": "http",
               "host": ["127", "0", "0", "1"],
               "port": "5000",
-              "path": ["incidences", ""]
+              "path": ["v1","incidences", ""]
             }
           },
           "response": []
@@ -29,11 +29,11 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "http://127.0.0.1:5000/incidences/?dateFrom=2020-08-01",
+              "raw": "http://127.0.0.1:5000/v1/incidences/?dateFrom=2020-08-01",
               "protocol": "http",
               "host": ["127", "0", "0", "1"],
               "port": "5000",
-              "path": ["incidences", ""],
+              "path": ["v1","incidences", ""],
               "query": [
                 {
                   "key": "dateFrom",
@@ -50,11 +50,11 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "http://127.0.0.1:5000/incidences/?dateTo=2021-02-01",
+              "raw": "http://127.0.0.1:5000/v1/incidences/?dateTo=2021-02-01",
               "protocol": "http",
               "host": ["127", "0", "0", "1"],
               "port": "5000",
-              "path": ["incidences", ""],
+              "path": ["v1","incidences", ""],
               "query": [
                 {
                   "key": "dateTo",
@@ -71,11 +71,11 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "http://127.0.0.1:5000/incidences/?dateFrom=2021-01-15&dateTo=2021-02-15",
+              "raw": "http://127.0.0.1:5000/v1/incidences/?dateFrom=2021-01-15&dateTo=2021-02-15",
               "protocol": "http",
               "host": ["127", "0", "0", "1"],
               "port": "5000",
-              "path": ["incidences", ""],
+              "path": ["v1","incidences", ""],
               "query": [
                 {
                   "key": "dateFrom",
@@ -96,11 +96,11 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "http://127.0.0.1:5000/incidences/3544",
+              "raw": "http://127.0.0.1:5000/v1/incidences/3544",
               "protocol": "http",
               "host": ["127", "0", "0", "1"],
               "port": "5000",
-              "path": ["incidences", "3544"]
+              "path": ["v1","incidences", "3544"]
             }
           },
           "response": []
@@ -111,11 +111,11 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "http://127.0.0.1:5000/incidences/3544/?dateFrom=2020-03-01&dateTo=2020-04-01",
+              "raw": "http://127.0.0.1:5000/v1/incidences/3544/?dateFrom=2020-03-01&dateTo=2020-04-01",
               "protocol": "http",
               "host": ["127", "0", "0", "1"],
               "port": "5000",
-              "path": ["incidences", "3544", ""],
+              "path": ["v1","incidences", "3544", ""],
               "query": [
                 {
                   "key": "dateFrom",
@@ -141,11 +141,11 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "http://127.0.0.1:5000/municipalities/",
+              "raw": "http://127.0.0.1:5000/v1/municipalities/",
               "protocol": "http",
               "host": ["127", "0", "0", "1"],
               "port": "5000",
-              "path": ["municipalities", ""]
+              "path": ["v1","municipalities", ""]
             }
           },
           "response": []
@@ -156,11 +156,11 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "http://127.0.0.1:5000/municipalities/3522",
+              "raw": "http://127.0.0.1:5000/v1/municipalities/3522",
               "protocol": "http",
               "host": ["127", "0", "0", "1"],
               "port": "5000",
-              "path": ["municipalities", "3522"]
+              "path": ["v1","municipalities", "3522"]
             }
           },
           "response": []
@@ -171,11 +171,11 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "http://127.0.0.1:5000/municipalities/3551",
+              "raw": "http://127.0.0.1:5000/v1/municipalities/3551",
               "protocol": "http",
               "host": ["127", "0", "0", "1"],
               "port": "5000",
-              "path": ["municipalities", "3551"]
+              "path": ["v1","municipalities", "3551"]
             }
           },
           "response": []

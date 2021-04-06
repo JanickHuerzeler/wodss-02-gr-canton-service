@@ -18,11 +18,17 @@ paths:
       responses:
         "200":
           description: "OK"
-  /incidences/bfsNr/:
+  /incidences/{bfsNr}/:
     get:
       tags:
       - "incidences"
       summary: "Liefert die Inzidenz für eine spezifische Gemeinde"
+      parameters:
+        - in: path
+          name: bfsNr
+          type: integer
+          required: true
+          description: "bfsNr"
       responses:
         "200":
           description: "OK"
@@ -34,11 +40,31 @@ paths:
       responses:
         "200":
           description: "OK"
-  /municipalities/bfsNr:
+  /municipalities/{bfsNr}/:
     get:
       tags:
       - "municipalities"
       summary: "Liefert für eine verfügbare Gemeinde"
+      parameters:
+        - in: path
+          name: bfsNr
+          type: integer
+          required: true
+          description: "bfsNr"
+        - in: query
+          name: dateFrom
+          schema:
+            type: date
+            pattern: /([0-9]{4})-(?:[0-9]{2})-([0-9]{2})/
+            example: "2020-08-01"
+          description: "dateFrom"
+        - in: query
+          name: dateTo
+          schema:
+            type: date
+            pattern: /([0-9]{4})-(?:[0-9]{2})-([0-9]{2})/
+            example: "2020-08-30"
+          description: "dateTo"
       responses:
         "200":
           description: "OK"
