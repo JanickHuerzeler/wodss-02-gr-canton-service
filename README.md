@@ -10,7 +10,7 @@ Kantonsservice für den Workshop in der Vertiefung "Distributed Software Systems
 - Python 3.9
 
 Es wird empfohlen, mit einem Conda Environment zu arbeiten.
-Folgender Befehler erstellt ein neues Conda Environment mit dem Namen `WODSS`:
+Folgender Befehl erstellt ein neues Conda Environment mit dem Namen `WODSS`:
 
 ```zsh / CMD
 conda create -n WODSS python=3.9
