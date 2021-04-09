@@ -20,13 +20,14 @@ def get_cantons_metadata_df_with_file_check(forceUrlDownload: bool = False) -> p
         f'get_cantons_metadata_df_with_file_check: forceUrlDownload is set to {forceUrlDownload}.')
 
     # get configuration for download urls and filenames
-    cfgm = ConfigManager.get_instance().get_canton_metadata_configuration()
+    cfgm = ConfigManager.get_instance()
+    cf_cm = cfgm.get_canton_metadata_configuration()
 
     # declare df_municipalities for later assignment
     df_canton_metadata = None
 
-    excel_file_path = os.path.abspath(os.path.join(
-        'resources', 'municipality_data', cfgm['excelFileName']))
+    excel_file_path = os.path.join(cfgm.ROOT_DIR,
+                                   'resources', 'municipality_data', cf_cm['excelFileName'])
 
     # if excel file does not exist, download and save it previously
     if os.path.isfile(excel_file_path) and forceUrlDownload is False:
@@ -40,9 +41,9 @@ def get_cantons_metadata_df_with_file_check(forceUrlDownload: bool = False) -> p
         if forceUrlDownload is False:
             print(
                 f"{excel_file_path} does not exist. Excel needs to be downloaded...")
-        print(f"Fetching data from {cfgm['dataSourceGetUrl']}.")
+        print(f"Fetching data from {cf_cm['dataSourceGetUrl']}.")
 
-        response = requests.get(cfgm['dataSourceGetUrl'])
+        response = requests.get(cf_cm['dataSourceGetUrl'])
         excelData = response.content
         dfs = pd.read_excel(excelData)
         df_canton_metadata = dfs
@@ -77,6 +78,7 @@ def get_cantons_metadata_df(forceUrlDownload: bool = False):
 
     """
     return get_cantons_metadata_df_with_file_check(forceUrlDownload=forceUrlDownload)
+
 
 if __name__ == '__main__':
     print(get_cantons_metadata_df().head())
