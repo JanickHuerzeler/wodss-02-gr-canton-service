@@ -13,3 +13,11 @@ db = SQLAlchemy(app)
 
 def create_app():
     return app
+
+
+def get_test_app():
+    global db, app
+    # app = Flask(__name__)
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///:memory:'
+    db = SQLAlchemy(app) # overwrite the postgresql settings, as db gets referenced by services
+    return app
