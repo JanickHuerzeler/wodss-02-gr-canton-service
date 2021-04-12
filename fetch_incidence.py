@@ -15,8 +15,8 @@ import modules.process_incidence.db as idb
 
 
 parser = argparse.ArgumentParser(
-    description='Entry point for municipality fetching')
-parser.add_argument('--save_to_db', help='When provided, the municipalities get saved to the database',
+    description='Entry point for incidence fetching and calculation')
+parser.add_argument('--save_to_db', help='When provided, the incidences get saved to the database',
                     required=False, default=False, action='store_true')
 parser.add_argument('--full_dataset', help='When provided, all data is being loaded ',
                     required=False, default=False, action='store_true')
