@@ -1,0 +1,702 @@
+[
+    {
+      "area": 42.51, 
+      "bfsNr": 3506, 
+      "canton": "GR", 
+      "name": "Vaz/Obervaz", 
+      "population": 2780
+    }, 
+    {
+      "area": 21.81, 
+      "bfsNr": 3513, 
+      "canton": "GR", 
+      "name": "Lantsch/Lenz", 
+      "population": 535
+    }, 
+    {
+      "area": 11.35, 
+      "bfsNr": 3514, 
+      "canton": "GR", 
+      "name": "Schmitten (GR)", 
+      "population": 234
+    }, 
+    {
+      "area": 93.93, 
+      "bfsNr": 3542, 
+      "canton": "GR", 
+      "name": "Albula/Alvra", 
+      "population": 1310
+    }, 
+    {
+      "area": 323.77, 
+      "bfsNr": 3543, 
+      "canton": "GR", 
+      "name": "Surses", 
+      "population": 2356
+    }, 
+    {
+      "area": 190.14, 
+      "bfsNr": 3544, 
+      "canton": "GR", 
+      "name": "Berg\u00fcn Filisur", 
+      "population": 905
+    }, 
+    {
+      "area": 46.3, 
+      "bfsNr": 3551, 
+      "canton": "GR", 
+      "name": "Brusio", 
+      "population": 1113
+    }, 
+    {
+      "area": 191.01, 
+      "bfsNr": 3561, 
+      "canton": "GR", 
+      "name": "Poschiavo", 
+      "population": 3516
+    }, 
+    {
+      "area": 22.36, 
+      "bfsNr": 3572, 
+      "canton": "GR", 
+      "name": "Falera", 
+      "population": 615
+    }, 
+    {
+      "area": 31.71, 
+      "bfsNr": 3575, 
+      "canton": "GR", 
+      "name": "Laax", 
+      "population": 1858
+    }, 
+    {
+      "area": 6.92, 
+      "bfsNr": 3581, 
+      "canton": "GR", 
+      "name": "Sagogn", 
+      "population": 719
+    }, 
+    {
+      "area": 4.79, 
+      "bfsNr": 3582, 
+      "canton": "GR", 
+      "name": "Schluein", 
+      "population": 648
+    }, 
+    {
+      "area": 175.56, 
+      "bfsNr": 3603, 
+      "canton": "GR", 
+      "name": "Vals", 
+      "population": 1007
+    }, 
+    {
+      "area": 165.48, 
+      "bfsNr": 3618, 
+      "canton": "GR", 
+      "name": "Lumnezia", 
+      "population": 2026
+    }, 
+    {
+      "area": 133.48, 
+      "bfsNr": 3619, 
+      "canton": "GR", 
+      "name": "Ilanz/Glion", 
+      "population": 4756
+    }, 
+    {
+      "area": 1.32, 
+      "bfsNr": 3633, 
+      "canton": "GR", 
+      "name": "F\u00fcrstenau", 
+      "population": 353
+    }, 
+    {
+      "area": 3.11, 
+      "bfsNr": 3637, 
+      "canton": "GR", 
+      "name": "Rothenbrunnen", 
+      "population": 299
+    }, 
+    {
+      "area": 14.29, 
+      "bfsNr": 3638, 
+      "canton": "GR", 
+      "name": "Scharans", 
+      "population": 789
+    }, 
+    {
+      "area": 9.28, 
+      "bfsNr": 3640, 
+      "canton": "GR", 
+      "name": "Sils im Domleschg", 
+      "population": 943
+    }, 
+    {
+      "area": 31.18, 
+      "bfsNr": 3661, 
+      "canton": "GR", 
+      "name": "Cazis", 
+      "population": 2228
+    }, 
+    {
+      "area": 6.09, 
+      "bfsNr": 3662, 
+      "canton": "GR", 
+      "name": "Flerden", 
+      "population": 248
+    }, 
+    {
+      "area": 4.2, 
+      "bfsNr": 3663, 
+      "canton": "GR", 
+      "name": "Masein", 
+      "population": 488
+    }, 
+    {
+      "area": 16.77, 
+      "bfsNr": 3668, 
+      "canton": "GR", 
+      "name": "Thusis", 
+      "population": 3217
+    }, 
+    {
+      "area": 24.67, 
+      "bfsNr": 3669, 
+      "canton": "GR", 
+      "name": "Tschappina", 
+      "population": 130
+    }, 
+    {
+      "area": 4.33, 
+      "bfsNr": 3670, 
+      "canton": "GR", 
+      "name": "Urmein", 
+      "population": 154
+    }, 
+    {
+      "area": 151.42, 
+      "bfsNr": 3672, 
+      "canton": "GR", 
+      "name": "Safiental", 
+      "population": 901
+    }, 
+    {
+      "area": 45.94, 
+      "bfsNr": 3673, 
+      "canton": "GR", 
+      "name": "Domleschg", 
+      "population": 2067
+    }, 
+    {
+      "area": 93.12, 
+      "bfsNr": 3681, 
+      "canton": "GR", 
+      "name": "Avers", 
+      "population": 168
+    }, 
+    {
+      "area": 34.62, 
+      "bfsNr": 3695, 
+      "canton": "GR", 
+      "name": "Sufers", 
+      "population": 144
+    }, 
+    {
+      "area": 46.3, 
+      "bfsNr": 3701, 
+      "canton": "GR", 
+      "name": "Andeer", 
+      "population": 908
+    }, 
+    {
+      "area": 2.02, 
+      "bfsNr": 3711, 
+      "canton": "GR", 
+      "name": "Rongellen", 
+      "population": 53
+    }, 
+    {
+      "area": 24.47, 
+      "bfsNr": 3712, 
+      "canton": "GR", 
+      "name": "Zillis-Reischen", 
+      "population": 401
+    }, 
+    {
+      "area": 75.46, 
+      "bfsNr": 3713, 
+      "canton": "GR", 
+      "name": "Ferrera", 
+      "population": 75
+    }, 
+    {
+      "area": 136.82, 
+      "bfsNr": 3714, 
+      "canton": "GR", 
+      "name": "Rheinwald", 
+      "population": 577
+    }, 
+    {
+      "area": 14.4, 
+      "bfsNr": 3721, 
+      "canton": "GR", 
+      "name": "Bonaduz", 
+      "population": 3331
+    }, 
+    {
+      "area": 24.22, 
+      "bfsNr": 3722, 
+      "canton": "GR", 
+      "name": "Domat/Ems", 
+      "population": 8038
+    }, 
+    {
+      "area": 13.37, 
+      "bfsNr": 3723, 
+      "canton": "GR", 
+      "name": "Rh\u00e4z\u00fcns", 
+      "population": 1496
+    }, 
+    {
+      "area": 13.4, 
+      "bfsNr": 3731, 
+      "canton": "GR", 
+      "name": "Felsberg", 
+      "population": 2622
+    }, 
+    {
+      "area": 50.5, 
+      "bfsNr": 3732, 
+      "canton": "GR", 
+      "name": "Flims", 
+      "population": 2836
+    }, 
+    {
+      "area": 40.74, 
+      "bfsNr": 3733, 
+      "canton": "GR", 
+      "name": "Tamins", 
+      "population": 1217
+    }, 
+    {
+      "area": 47.17, 
+      "bfsNr": 3734, 
+      "canton": "GR", 
+      "name": "Trin", 
+      "population": 1430
+    }, 
+    {
+      "area": 344.04, 
+      "bfsNr": 3746, 
+      "canton": "GR", 
+      "name": "Zernez", 
+      "population": 1527
+    }, 
+    {
+      "area": 56.28, 
+      "bfsNr": 3752, 
+      "canton": "GR", 
+      "name": "Samnaun", 
+      "population": 767
+    }, 
+    {
+      "area": 438.63, 
+      "bfsNr": 3762, 
+      "canton": "GR", 
+      "name": "Scuol", 
+      "population": 4591
+    }, 
+    {
+      "area": 158.96, 
+      "bfsNr": 3764, 
+      "canton": "GR", 
+      "name": "Valsot", 
+      "population": 855
+    }, 
+    {
+      "area": 45.75, 
+      "bfsNr": 3781, 
+      "canton": "GR", 
+      "name": "Bever", 
+      "population": 616
+    }, 
+    {
+      "area": 24.02, 
+      "bfsNr": 3782, 
+      "canton": "GR", 
+      "name": "Celerina/Schlarigna", 
+      "population": 1502
+    }, 
+    {
+      "area": 16.28, 
+      "bfsNr": 3783, 
+      "canton": "GR", 
+      "name": "Madulain", 
+      "population": 210
+    }, 
+    {
+      "area": 118.2, 
+      "bfsNr": 3784, 
+      "canton": "GR", 
+      "name": "Pontresina", 
+      "population": 2162
+    }, 
+    {
+      "area": 63.28, 
+      "bfsNr": 3785, 
+      "canton": "GR", 
+      "name": "La Punt Chamues-ch", 
+      "population": 686
+    }, 
+    {
+      "area": 113.8, 
+      "bfsNr": 3786, 
+      "canton": "GR", 
+      "name": "Samedan", 
+      "population": 2924
+    }, 
+    {
+      "area": 28.69, 
+      "bfsNr": 3787, 
+      "canton": "GR", 
+      "name": "St. Moritz", 
+      "population": 4928
+    }, 
+    {
+      "area": 138.04, 
+      "bfsNr": 3788, 
+      "canton": "GR", 
+      "name": "S-chanf", 
+      "population": 690
+    }, 
+    {
+      "area": 63.58, 
+      "bfsNr": 3789, 
+      "canton": "GR", 
+      "name": "Sils im Engadin/Segl", 
+      "population": 700
+    }, 
+    {
+      "area": 44.77, 
+      "bfsNr": 3790, 
+      "canton": "GR", 
+      "name": "Silvaplana", 
+      "population": 1111
+    }, 
+    {
+      "area": 65.79, 
+      "bfsNr": 3791, 
+      "canton": "GR", 
+      "name": "Zuoz", 
+      "population": 1186
+    }, 
+    {
+      "area": 251.45, 
+      "bfsNr": 3792, 
+      "canton": "GR", 
+      "name": "Bregaglia", 
+      "population": 1544
+    }, 
+    {
+      "area": 11.15, 
+      "bfsNr": 3804, 
+      "canton": "GR", 
+      "name": "Buseno", 
+      "population": 87
+    }, 
+    {
+      "area": 3.96, 
+      "bfsNr": 3805, 
+      "canton": "GR", 
+      "name": "Castaneda", 
+      "population": 275
+    }, 
+    {
+      "area": 58.89, 
+      "bfsNr": 3808, 
+      "canton": "GR", 
+      "name": "Rossa", 
+      "population": 148
+    }, 
+    {
+      "area": 9.31, 
+      "bfsNr": 3810, 
+      "canton": "GR", 
+      "name": "Santa Maria in Calanca", 
+      "population": 109
+    }, 
+    {
+      "area": 50.86, 
+      "bfsNr": 3821, 
+      "canton": "GR", 
+      "name": "Lostallo", 
+      "population": 792
+    }, 
+    {
+      "area": 164.77, 
+      "bfsNr": 3822, 
+      "canton": "GR", 
+      "name": "Mesocco", 
+      "population": 1347
+    }, 
+    {
+      "area": 46.42, 
+      "bfsNr": 3823, 
+      "canton": "GR", 
+      "name": "Soazza", 
+      "population": 319
+    }, 
+    {
+      "area": 15.0, 
+      "bfsNr": 3831, 
+      "canton": "GR", 
+      "name": "Cama", 
+      "population": 560
+    }, 
+    {
+      "area": 37.13, 
+      "bfsNr": 3832, 
+      "canton": "GR", 
+      "name": "Grono", 
+      "population": 1378
+    }, 
+    {
+      "area": 38.79, 
+      "bfsNr": 3834, 
+      "canton": "GR", 
+      "name": "Roveredo (GR)", 
+      "population": 2520
+    }, 
+    {
+      "area": 22.06, 
+      "bfsNr": 3835, 
+      "canton": "GR", 
+      "name": "San Vittore", 
+      "population": 832
+    }, 
+    {
+      "area": 37.72, 
+      "bfsNr": 3837, 
+      "canton": "GR", 
+      "name": "Calanca", 
+      "population": 199
+    }, 
+    {
+      "area": 198.64, 
+      "bfsNr": 3847, 
+      "canton": "GR", 
+      "name": "Val M\u00fcstair", 
+      "population": 1460
+    }, 
+    {
+      "area": 284.0, 
+      "bfsNr": 3851, 
+      "canton": "GR", 
+      "name": "Davos", 
+      "population": 10899
+    }, 
+    {
+      "area": 25.36, 
+      "bfsNr": 3861, 
+      "canton": "GR", 
+      "name": "Fideris", 
+      "population": 608
+    }, 
+    {
+      "area": 33.32, 
+      "bfsNr": 3862, 
+      "canton": "GR", 
+      "name": "Furna", 
+      "population": 221
+    }, 
+    {
+      "area": 25.91, 
+      "bfsNr": 3863, 
+      "canton": "GR", 
+      "name": "Jenaz", 
+      "population": 1146
+    }, 
+    {
+      "area": 219.8, 
+      "bfsNr": 3871, 
+      "canton": "GR", 
+      "name": "Klosters", 
+      "population": 4451
+    }, 
+    {
+      "area": 18.4, 
+      "bfsNr": 3881, 
+      "canton": "GR", 
+      "name": "Conters im Pr\u00e4ttigau", 
+      "population": 226
+    }, 
+    {
+      "area": 8.14, 
+      "bfsNr": 3882, 
+      "canton": "GR", 
+      "name": "K\u00fcblis", 
+      "population": 853
+    }, 
+    {
+      "area": 83.88, 
+      "bfsNr": 3891, 
+      "canton": "GR", 
+      "name": "Luzein", 
+      "population": 1582
+    }, 
+    {
+      "area": 35.68, 
+      "bfsNr": 3901, 
+      "canton": "GR", 
+      "name": "Chur", 
+      "population": 35897
+    }, 
+    {
+      "area": 48.53, 
+      "bfsNr": 3911, 
+      "canton": "GR", 
+      "name": "Churwalden", 
+      "population": 1949
+    }, 
+    {
+      "area": 154.79, 
+      "bfsNr": 3921, 
+      "canton": "GR", 
+      "name": "Arosa", 
+      "population": 3131
+    }, 
+    {
+      "area": 27.74, 
+      "bfsNr": 3932, 
+      "canton": "GR", 
+      "name": "Tschiertschen-Praden", 
+      "population": 305
+    }, 
+    {
+      "area": 42.87, 
+      "bfsNr": 3945, 
+      "canton": "GR", 
+      "name": "Trimmis", 
+      "population": 3304
+    }, 
+    {
+      "area": 27.72, 
+      "bfsNr": 3946, 
+      "canton": "GR", 
+      "name": "Untervaz", 
+      "population": 2521
+    }, 
+    {
+      "area": 11.01, 
+      "bfsNr": 3947, 
+      "canton": "GR", 
+      "name": "Zizers", 
+      "population": 3434
+    }, 
+    {
+      "area": 19.94, 
+      "bfsNr": 3951, 
+      "canton": "GR", 
+      "name": "Fl\u00e4sch", 
+      "population": 799
+    }, 
+    {
+      "area": 10.54, 
+      "bfsNr": 3952, 
+      "canton": "GR", 
+      "name": "Jenins", 
+      "population": 886
+    }, 
+    {
+      "area": 32.33, 
+      "bfsNr": 3953, 
+      "canton": "GR", 
+      "name": "Maienfeld", 
+      "population": 2945
+    }, 
+    {
+      "area": 11.4, 
+      "bfsNr": 3954, 
+      "canton": "GR", 
+      "name": "Malans", 
+      "population": 2379
+    }, 
+    {
+      "area": 18.86, 
+      "bfsNr": 3955, 
+      "canton": "GR", 
+      "name": "Landquart", 
+      "population": 8889
+    }, 
+    {
+      "area": 43.3, 
+      "bfsNr": 3961, 
+      "canton": "GR", 
+      "name": "Gr\u00fcsch", 
+      "population": 2076
+    }, 
+    {
+      "area": 61.66, 
+      "bfsNr": 3962, 
+      "canton": "GR", 
+      "name": "Schiers", 
+      "population": 2679
+    }, 
+    {
+      "area": 49.63, 
+      "bfsNr": 3972, 
+      "canton": "GR", 
+      "name": "Seewis im Pr\u00e4ttigau", 
+      "population": 1342
+    }, 
+    {
+      "area": 96.58, 
+      "bfsNr": 3981, 
+      "canton": "GR", 
+      "name": "Breil/Brigels", 
+      "population": 1757
+    }, 
+    {
+      "area": 90.99, 
+      "bfsNr": 3982, 
+      "canton": "GR", 
+      "name": "Disentis/Must\u00e9r", 
+      "population": 2080
+    }, 
+    {
+      "area": 136.22, 
+      "bfsNr": 3983, 
+      "canton": "GR", 
+      "name": "Medel (Lucmagn)", 
+      "population": 362
+    }, 
+    {
+      "area": 101.88, 
+      "bfsNr": 3985, 
+      "canton": "GR", 
+      "name": "Sumvitg", 
+      "population": 1158
+    }, 
+    {
+      "area": 133.91, 
+      "bfsNr": 3986, 
+      "canton": "GR", 
+      "name": "Tujetsch", 
+      "population": 1238
+    }, 
+    {
+      "area": 51.9, 
+      "bfsNr": 3987, 
+      "canton": "GR", 
+      "name": "Trun", 
+      "population": 1170
+    }, 
+    {
+      "area": 70.36, 
+      "bfsNr": 3988, 
+      "canton": "GR", 
+      "name": "Obersaxen Mundaun", 
+      "population": 1188
+    }
+  ]

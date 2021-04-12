@@ -1,3 +1,5 @@
+from unittest import mock
+from services.MunicipalityService import MunicipalityService
 import pytest
 from flask import json, jsonify
 from configManager import ConfigManager
@@ -16,6 +18,7 @@ def test_municipalities_base_route(client, app):
     assert response.status_code == 200
     assert response.headers["Content-Type"] == "application/json"
 
+
 def test_municipalities_base_route(client, app):
     """
     Check if /municipalities/ without filtering returns 
@@ -26,6 +29,7 @@ def test_municipalities_base_route(client, app):
     response = client.get(url)
     data = response.get_json()
     assert len(data) == 100
+
 
 def test_municipalities_filisur_request(client, app):
     """
@@ -53,6 +57,7 @@ def test_municipalities_filisur_data(client, app):
     assert data["name"] == 'Bergün Filisur'
     assert data["population"] == 905
 
+
 def test_municipalities_inexistent_bfsNr(client, app):
     """
     Check if /municipalities/6621/ (Geneva) returns 
@@ -76,3 +81,72 @@ def test_municipalities_inexistent_bfsNr(client, app):
     assert response.status_code == 404
     assert response.headers["Content-Type"] == "text/html; charset=utf-8"
     assert b'No municipality found for bfsNr 6621!' in response.get_data()
+
+
+
+
+# from typing import List
+# from models.municipality import Municipality
+# class MockResponse:
+#     @staticmethod
+#     def get_all() -> List[Municipality]:
+#         return [{"area": 42.51,"bfsNr": 3506,"canton": "GR","name": "Vaz/Obervaz","population": 2780}]
+# def test_municipalities_get_all(client, mocker, monkeypatch):
+
+#     def mock_get_all():
+#         return MockResponse()
+
+#     # https://docs.pytest.org/en/stable/monkeypatch.html
+#     monkeypatch.setattr(MunicipalityService, 'get_all', mock_get_all)
+#     # mocker.patch("services.MunicipalityService.get_all", return_value=municipalities)
+#     url = application_root+'/municipalities/'
+#     response = client.get(url)
+#     print(response)
+#     data = response.get_json()[0]
+#     assert response.status_code == 200
+#     print(data)
+
+
+
+# from unittest.mock import Mock, patch
+# from services.MunicipalityService import MunicipalityService
+# @pytest.fixture
+# def mock_ms_get_all():
+#     return Mock(spec=MunicipalityService)
+# def test_municipalities_get_all(client, mock_ms_get_all):
+#     municipalities = [{
+#       "area": 42.51,
+#       "bfsNr": 3506,
+#       "canton": "GR",
+#       "name": "Vaz/Obervaz",
+#       "population": 2780
+#     },{
+#       "area": 11.35,
+#       "bfsNr": 3514,
+#       "canton": "GR",
+#       "name": "Schmitten (GR)",
+#       "population": 234
+#     }]
+
+#     mock_ms_get_all = Mock(name='MunicipalityService.get_all Mock', return_value = municipalities)
+#     MunicipalityService.get_all = mock_ms_get_all
+
+#     # mock_ms_get_all.get_all.return_value = municipalities
+#     url = application_root+'/municipalities/'
+#     response = client.get(url)
+#     assert response.status_code == 200
+#     mock_ms_get_all.assert_called_once()
+#     data = response.get_json()[0]
+
+#     assert data["area"] == 42.51
+#     assert data["bfsNr"] == 3506
+#     assert data["canton"] == 'GR'
+#     assert data["name"] == 'Vaz/Obervaz'
+#     assert data["population"] == 2780
+
+#     data = response.get_json()[1]
+#     assert data["area"] == 11.35
+#     assert data["bfsNr"] == 3514
+#     assert data["canton"] == 'GR'
+#     assert data["name"] == 'Schmitten (GR)'
+#     assert data["population"] == 234
