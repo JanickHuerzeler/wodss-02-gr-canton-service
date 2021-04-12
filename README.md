@@ -179,7 +179,7 @@ open index.html
 
 ```ZSH / CMD
 sudo apt-get update
-sudo apt-get install git python-dev python3-pip ngnix build-essential postgresql postgresql-contrib
+sudo apt-get install git python-dev python3-pip python3.9 ngnix build-essential postgresql postgresql-contrib
 sudo pip3 install uwsgi
 ```
 
@@ -221,7 +221,8 @@ sudo fallocate -l 2G /swapfile && sudo chmod 600 /swapfile && sudo mkswap /swapf
 Now we can create the conda env using environment.yml
 
 ```ZSH / CMD
-conda env create -f /opt/apps/wodss-02-gr-canton-service/resources/environment.yml
+conda env create -f /opt/apps/wodss-02-gr-canton-service/resources/environment.yml python=3.9
+
 source activate WODSS
 ```
 
@@ -232,9 +233,9 @@ sudo -u postgres psql postgres
 CREATE DATABASE "wodssCantonServiceGR";
 \password postgres (pw: postgres)
 \q
-/opt/anaconda/envs/WODSS/bin/python3.8 /opt/apps/wodss-02-gr-canton-service/manage.py db upgrade
-/opt/anaconda/envs/WODSS/bin/python3.8 /opt/apps/wodss-02-gr-canton-service/fetch_municipality.py --save_to_db
-/opt/anaconda/envs/WODSS/bin/python3.8 /opt/apps/wodss-02-gr-canton-service/fetch_incidence.py --full_dataset --save_to_db
+/opt/anaconda/envs/WODSS/bin/python3.9 /opt/apps/wodss-02-gr-canton-service/manage.py db upgrade
+/opt/anaconda/envs/WODSS/bin/python3.9 /opt/apps/wodss-02-gr-canton-service/fetch_municipality.py --save_to_db
+/opt/anaconda/envs/WODSS/bin/python3.9 /opt/apps/wodss-02-gr-canton-service/fetch_incidence.py --full_dataset --save_to_db
 
 sudo systemctl enable postgresql
 ```
@@ -242,7 +243,7 @@ sudo systemctl enable postgresql
 ### Step 6 - Setup cronjob (Fetch incidences every 2 hours)
 ```ZSH / CMD
 crontab -e
-0 */2 * * * /opt/anaconda/envs/WODSS/bin/python3.8 /opt/apps/wodss-02-gr-canton-service/fetch_incidence.py --save_to_db
+0 */2 * * * /opt/anaconda/envs/WODSS/bin/python3.9 /opt/apps/wodss-02-gr-canton-service/fetch_incidence.py --save_to_db
 ```
 
 ### Step 7 - Setup Nginx
@@ -321,7 +322,34 @@ sudo certbot run -a manual -i nginx -d gr.corona-navigator.ch
 sudo certbot run -a manual -i nginx -d corona-navigator.ch -d www.corona-navigator.ch
 ```
 
-### Step 10 (optional) - Setup FTP
+### Create deploy script
+
+First we have to open ports 20-21 + 4242-4243 on SWITCHEngine: https://bit.ly/3fN5UD0
+
+```ZSH / CMD
+sudo tee /home/ubuntu/deploy.sh <<EOF
+echo -e '\nTry to create swapfile...'
+sudo fallocate -l 2G /swapfile && sudo chmod 600 /swapfile && sudo mkswap /swapfile && sudo swapon /swapfile
+
+echo -e '\nGit fetch & merge...'
+cd /opt/apps/wodss-02-gr-canton-service/
+git fetch
+git reset --hard HEAD > /dev/null
+git merge '@{u}'
+
+echo -e '\nUpdate conda environment...'
+conda env update --file /opt/apps/wodss-02-gr-canton-service/resources/environment.yml
+
+echo -e '\nRestarting canton service...'
+sudo systemctl restart wodss-02-gr-canton-service.service
+
+GREEN='\033[0;32m'
+NC='\033[0m' # No Color
+printf "\n${GREEN}Deployment successfull${NC}\n\n"
+EOF
+```
+
+### Step 11 (optional) - Setup FTP
 
 First we have to open ports 20-21 + 4242-4243 on SWITCHEngine: https://bit.ly/3fN5UD0
 
