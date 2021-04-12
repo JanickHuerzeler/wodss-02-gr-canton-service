@@ -1,5 +1,5 @@
-from setup import create_app
-
+from setup import get_test_app, db
+from sqlalchemy.sql import text
 import pytest
 
 
@@ -12,7 +12,8 @@ from setup import app
 
 @pytest.fixture
 def app():
-    app = create_app()
+    app = get_test_app()
+    
     with app.app_context():
 
         server_config = ConfigManager.get_instance().get_server_config()
@@ -23,7 +24,50 @@ def app():
         app.register_blueprint(swaggerui_controller, url_prefix=application_root)
 
         app.config['DEVELOPMENT'] = server_config["development"]
-        # app.run(debug=server_config["debug"], host=server_config["host"], port=server_config["port"])
+        
+
+        with app.open_resource("tests/api-blackbox/testdata/dump_municipalities.sql") as f_municipalities:
+            with app.open_resource("tests/api-blackbox/testdata/dump_incidences.sql") as f_incidences:
+                engine = db.get_engine()
+                
+                with engine.connect() as con:
+
+                    create_incidence = '''
+                    CREATE TABLE incidence (
+                        "incidencesId" integer NOT NULL,
+                        "bfsNr" integer NOT NULL,
+                        date date NOT NULL,
+                        incidence double precision NOT NULL,
+                        cases integer NOT NULL,
+                        cases_cumsum_14d integer NOT NULL
+                    );
+                    '''
+
+                    create_municipality = '''
+                    CREATE TABLE municipality (
+                        "bfsNr" integer NOT NULL,
+                        name character varying(256) NOT NULL,
+                        canton character varying(2) NOT NULL,
+                        area double precision NOT NULL,
+                        population integer NOT NULL,
+                        region character varying(256) NOT NULL
+                    );
+                    '''
+
+                    con.execute(create_municipality)
+                    con.execute(create_incidence)
+                    
+                    query_municipalities = text(f_municipalities.read().decode("utf8"))
+                    con.execute(query_municipalities)
+                    query_incidences = text(f_incidences.read().decode("utf8"))
+                    con.execute(query_incidences)
+
+        
+        
+        # db.executescript(f.read().decode("utf8"))
+
+
+        
         yield app
 
 # https://github.com/pallets/flask/blob/1.1.2/examples/tutorial/tests/conftest.py

@@ -1,8 +1,10 @@
 import pytest
 from flask import json, jsonify
 from configManager import ConfigManager
-
+from services.IncidenceService import IncidenceService
+from models.incidence import Incidence
 application_root = ConfigManager.get_instance().get_application_root()
+
 
 
 
@@ -34,8 +36,8 @@ def test_incidences_for_one_day(client, app):
     url = application_root+'/incidences/?dateFrom=2020-02-28&dateTo=2020-02-28'
     response = client.get(url)
     data = response.get_json()
-    assert len(data) == 100
-    for i in range(0,100):
+    assert len(data) == 101
+    for i in range(0,101):
         assert data[i]['bfsNr'] is not None
         assert data[i]['date'] == '2020-02-28'
         assert data[i]['incidence'] is not None
