@@ -64,6 +64,15 @@ def get_cantons_metadata_df_with_file_check(forceUrlDownload: bool = False) -> p
     df_population_for_bfsNr.rename(columns={'Gemeindecode': 'BFS_Nr',
                                    'Gesamtfläche in km²': 'Gesamtflaeche_in_km2'}, inplace=True)
     df_population_for_bfsNr.set_index('BFS_Nr', inplace=True)
+    
+    # TODO: Implement workaround for new fusionierte Gemeinde 'Muntogna da Schons' (BFS 3715) from 
+    # Casti-Wergenstein (3703),
+    # Donat (3705)
+    # Lohn (GR) (3707)
+    # Mathon (3708)
+    # New DF-row for 3715 with sum of Gesamtflaeche_in_km2 and Einwohner
+    # with check if 3715 not in (df_population_for_bfsNr['BFS_Nr'])
+    
     return df_population_for_bfsNr
 
 
