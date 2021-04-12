@@ -17,6 +17,15 @@ class MockResponse:
         return [{"area": 42.51, "bfsNr": 3506, "canton": "GR", "name": "Vaz/Obervaz", "population": 2780},
                 {"area": 190.14, "bfsNr": 3544, "canton": "GR", "name": "Berg\u00fcn Filisur", "population": 905}]
 
+    @staticmethod
+    def get(bfs_nr) -> object:
+        switcher = {
+            3506: [{"area": 42.51, "bfsNr": 3506, "canton": "GR", "name": "Vaz/Obervaz", "population": 2780}],
+            3544: [{"area": 190.14, "bfsNr": 3544, "canton": "GR", "name": "Berg\u00fcn Filisur", "population": 905}]
+        }
+
+        return switcher.get(int(bfs_nr), [])
+
 
 @pytest.fixture
 def service_mock(monkeypatch):
@@ -24,6 +33,11 @@ def service_mock(monkeypatch):
         return MockResponse().get_all()
 
     monkeypatch.setattr(MunicipalityService, 'get_all', mock_get_all)
+
+    def mock_get(bfs_nr):
+        return MockResponse().get(bfs_nr)
+
+    monkeypatch.setattr(MunicipalityService, 'get', mock_get)
 
 
 def test_municipalities_base_route(client, app, service_mock):
@@ -36,21 +50,28 @@ def test_municipalities_base_route(client, app, service_mock):
     response = client.get(url)
     assert response.status_code == 200
     assert response.headers["Content-Type"] == "application/json"
-
-
-def test_municipalities_base_route(client, app, service_mock):
-    """
-    Check if /municipalities/ without filtering returns 
-    - a list of all 100 municipalities of the canton GR
-    - current dates
-    """
-    url = application_root+'/municipalities/'
-    response = client.get(url)
     data = response.get_json()
     assert len(data) == NUMBER_OF_MOCKED_MUNICIPALITIES
 
 
-def test_municipalities_filisur_request(client, app, service_mock):
+@pytest.mark.parametrize("bfsData", [[(42.51, 3506, "GR", "Vaz/Obervaz", 2780), (190.14, 3544, "GR", "Berg\u00fcn Filisur", 905)]])
+def test_municipalities_base_all_data(client, app, service_mock, bfsData):
+    """
+    Check if /municipalities/ without filtering returns 
+    the correct data
+    """
+    url = application_root+'/municipalities/'
+    response = client.get(url)
+    data = response.get_json()
+    for i in range(0, NUMBER_OF_MOCKED_MUNICIPALITIES):
+        assert (data[i]['area'], data[i]['bfsNr'], data[i]['canton'],
+                data[i]['name'], data[i]['population']) in bfsData
+    assert len(data) == len(bfsData)
+    assert response.status_code == 200
+    assert response.headers["Content-Type"] == "application/json"
+
+
+def test_municipalities_filisur_request_statuscode_contenttype(client, app, service_mock):
     """
     Check if /municipalities/3544/ returns 
     - correct content-type "application/json"
@@ -62,31 +83,47 @@ def test_municipalities_filisur_request(client, app, service_mock):
     assert response.headers["Content-Type"] == "application/json"
 
 
-def test_municipalities_filisur_data(client, app, service_mock):
+@pytest.mark.parametrize("bfsNr", [350, 35, 3])
+def test_municipalities_bfsnr_not_found(client, app, service_mock, bfsNr):
     """
-    Check if /municipalities/3544/ returns 
-    - the correct details (as of 01.01.2021) for the municipality "Bergün Filisur"
+    Check if /municipalities/bfsNr/ returns 
+    404 for not found bfsNr
     """
-    url = application_root+'/municipalities/3544/'
-    response = client.get(url)
-    data = response.get_json()[0]
-    assert data["area"] == 190.14
-    assert data["bfsNr"] == 3544
-    assert data["canton"] == 'GR'
-    assert data["name"] == 'Bergün Filisur'
-    assert data["population"] == 905
-
-
-def test_municipalities_inexistent_bfsNr(client, app, service_mock):
-    """
-    Check if /municipalities/6621/ (Geneva) returns 
-    - 404 status code
-    - correct content-type
-    """
-    url = application_root+'/municipalities/6621/'
+    url = application_root+'/municipalities/'+str(bfsNr)+'/'
     response = client.get(url)
     assert response.status_code == 404
     assert response.headers["Content-Type"] == "text/html; charset=utf-8"
+    expectedMessage = f'No municipality found for bfsNr {str(bfsNr)}!'
+    assert bytes(expectedMessage, encoding='utf8') in response.get_data()
+
+
+@pytest.mark.parametrize("bfsNr", [35051, 350511, 3505262])
+def test_municipalities_bfsnr_wrong_format(client, app, service_mock, bfsNr):
+    """
+    Check if /municipalities/bfsNr/ returns 
+    invalid format message
+    """
+    url = application_root+'/municipalities/'+str(bfsNr)+'/'
+    response = client.get(url)
+    assert response.status_code == 400
+    assert response.headers["Content-Type"] == "text/html; charset=utf-8"
+    expectedMessage = f'Invalid format for parameter "bfsNr"'
+    assert bytes(expectedMessage, encoding='utf8') in response.get_data()
+
+
+@pytest.mark.parametrize("bfsNr, bfsData", [(3506, (42.51, 3506, "GR", "Vaz/Obervaz", 2780)), (3544, (190.14, 3544, "GR", "Berg\u00fcn Filisur", 905))])
+def test_municipalities_bfsnr_data(client, app, service_mock, bfsNr, bfsData):
+    """
+    Check if /municipalities/bfsNr/ returns 
+    - the correct details (as of 01.01.2021) for the municipality "Bergün Filisur"
+    """
+    url = application_root+'/municipalities/'+str(bfsNr)+'/'
+    response = client.get(url)
+    data = response.get_json()[0]
+    assert (data['area'], data['bfsNr'], data['canton'],
+            data['name'], data['population']) in [bfsData]
+    assert response.status_code == 200
+    assert response.headers["Content-Type"] == "application/json"
 
 
 def test_municipalities_inexistent_bfsNr(client, app, service_mock):
@@ -100,65 +137,3 @@ def test_municipalities_inexistent_bfsNr(client, app, service_mock):
     assert response.status_code == 404
     assert response.headers["Content-Type"] == "text/html; charset=utf-8"
     assert b'No municipality found for bfsNr 6621!' in response.get_data()
-
-
-# TODO /Municipality/bfsNr: Format Korrekt/inkorrekt abdecken
-# TODO /Municipality/bfsNr: Format nichtvorhandene bfsNr abdecken
-# TODO /Municipality/bfsNr: Format vorhandene bfsNr abdecken
-
-
-def test_municipalities_get_all(client, service_mock):
-    url = application_root+'/municipalities/'
-    response = client.get(url)
-    print(response)
-    data = response.get_json()[0]
-    assert response.status_code == 200
-    assert data["area"] == 42.51
-    assert data["bfsNr"] == 3506
-    assert data["canton"] == 'GR'
-    assert data["name"] == 'Vaz/Obervaz'
-    assert data["population"] == 2780
-
-
-# from unittest.mock import Mock, patch
-# from services.MunicipalityService import MunicipalityService
-# @pytest.fixture
-# def mock_ms_get_all():
-#     return Mock(spec=MunicipalityService)
-# def test_municipalities_get_all(client, mock_ms_get_all):
-#     municipalities = [{
-#       "area": 42.51,
-#       "bfsNr": 3506,
-#       "canton": "GR",
-#       "name": "Vaz/Obervaz",
-#       "population": 2780
-#     },{
-#       "area": 11.35,
-#       "bfsNr": 3514,
-#       "canton": "GR",
-#       "name": "Schmitten (GR)",
-#       "population": 234
-#     }]
-
-#     mock_ms_get_all = Mock(name='MunicipalityService.get_all Mock', return_value = municipalities)
-#     MunicipalityService.get_all = mock_ms_get_all
-
-#     # mock_ms_get_all.get_all.return_value = municipalities
-#     url = application_root+'/municipalities/'
-#     response = client.get(url)
-#     assert response.status_code == 200
-#     mock_ms_get_all.assert_called_once()
-#     data = response.get_json()[0]
-
-#     assert data["area"] == 42.51
-#     assert data["bfsNr"] == 3506
-#     assert data["canton"] == 'GR'
-#     assert data["name"] == 'Vaz/Obervaz'
-#     assert data["population"] == 2780
-
-#     data = response.get_json()[1]
-#     assert data["area"] == 11.35
-#     assert data["bfsNr"] == 3514
-#     assert data["canton"] == 'GR'
-#     assert data["name"] == 'Schmitten (GR)'
-#     assert data["population"] == 234

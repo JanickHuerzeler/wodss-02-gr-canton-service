@@ -7,7 +7,6 @@ from sqlalchemy import and_
 class IncidenceService:
     @staticmethod
     def get_all(date_from, date_to) -> List[Incidence]:
-        print(db.session.query(Incidence))
         incidences = db.session.query(Incidence).filter(Incidence.date.between(date_from, date_to))
 
         result = []
