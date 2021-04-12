@@ -1,5 +1,3 @@
-from unittest import mock
-from services.MunicipalityService import MunicipalityService
 import pytest
 from flask import json, jsonify
 from configManager import ConfigManager
@@ -83,28 +81,40 @@ def test_municipalities_inexistent_bfsNr(client, app):
     assert b'No municipality found for bfsNr 6621!' in response.get_data()
 
 
+# TODO /Municipality/bfsNr: Format Korrekt/inkorrekt abdecken
+# TODO /Municipality/bfsNr: Format nichtvorhandene bfsNr abdecken
+# TODO /Municipality/bfsNr: Format vorhandene bfsNr abdecken
 
 
-# from typing import List
-# from models.municipality import Municipality
-# class MockResponse:
-#     @staticmethod
-#     def get_all() -> List[Municipality]:
-#         return [{"area": 42.51,"bfsNr": 3506,"canton": "GR","name": "Vaz/Obervaz","population": 2780}]
-# def test_municipalities_get_all(client, mocker, monkeypatch):
 
-#     def mock_get_all():
-#         return MockResponse()
 
-#     # https://docs.pytest.org/en/stable/monkeypatch.html
-#     monkeypatch.setattr(MunicipalityService, 'get_all', mock_get_all)
-#     # mocker.patch("services.MunicipalityService.get_all", return_value=municipalities)
-#     url = application_root+'/municipalities/'
-#     response = client.get(url)
-#     print(response)
-#     data = response.get_json()[0]
-#     assert response.status_code == 200
-#     print(data)
+from services.MunicipalityService import MunicipalityService
+from typing import List
+from models.municipality import Municipality
+
+class MockResponse:
+    @staticmethod
+    def get_all() -> List[Municipality]:
+        return [{"area": 42.51,"bfsNr": 3506,"canton": "GR","name": "Vaz/Obervaz","population": 2780}]
+
+def test_municipalities_get_all(client, monkeypatch):
+
+    def mock_get_all():
+        return MockResponse().get_all()
+
+    # https://docs.pytest.org/en/stable/monkeypatch.html
+    monkeypatch.setattr(MunicipalityService, 'get_all', mock_get_all)
+    # mocker.patch("services.MunicipalityService.get_all", return_value=municipalities)
+    url = application_root+'/municipalities/'
+    response = client.get(url)
+    print(response)
+    data = response.get_json()[0]
+    assert response.status_code == 200
+    assert data["area"] == 42.51
+    assert data["bfsNr"] == 3506
+    assert data["canton"] == 'GR'
+    assert data["name"] == 'Vaz/Obervaz'
+    assert data["population"] == 2780
 
 
 
