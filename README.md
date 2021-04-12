@@ -7,13 +7,13 @@ Kantonsservice für den Workshop in der Vertiefung "Distributed Software Systems
 ## Prerequisites
 
 - Miniconda
-- Python 3.9
+- Python 3.8
 
 Es wird empfohlen, mit einem Conda Environment zu arbeiten.
 Folgender Befehl erstellt ein neues Conda Environment mit dem Namen `WODSS`:
 
 ```zsh / CMD
-conda create -n WODSS python=3.9
+conda create -n WODSS python=3.8
 conda env create -f resources/environment.yml
 ```
 
@@ -179,7 +179,7 @@ open index.html
 
 ```ZSH / CMD
 sudo apt-get update
-sudo apt-get install git python-dev python3-pip python3.9 ngnix build-essential postgresql postgresql-contrib
+sudo apt-get install git python3.8-dev python3-pip python3.8 ngnix build-essential postgresql postgresql-contrib
 sudo pip3 install uwsgi
 ```
 
@@ -221,7 +221,7 @@ sudo fallocate -l 2G /swapfile && sudo chmod 600 /swapfile && sudo mkswap /swapf
 Now we can create the conda env using environment.yml
 
 ```ZSH / CMD
-conda env create -f /opt/apps/wodss-02-gr-canton-service/resources/environment.yml python=3.9
+conda env create -f /opt/apps/wodss-02-gr-canton-service/resources/environment.yml
 
 source activate WODSS
 ```
@@ -233,9 +233,10 @@ sudo -u postgres psql postgres
 CREATE DATABASE "wodssCantonServiceGR";
 \password postgres (pw: postgres)
 \q
-/opt/anaconda/envs/WODSS/bin/python3.9 /opt/apps/wodss-02-gr-canton-service/manage.py db upgrade
-/opt/anaconda/envs/WODSS/bin/python3.9 /opt/apps/wodss-02-gr-canton-service/fetch_municipality.py --save_to_db
-/opt/anaconda/envs/WODSS/bin/python3.9 /opt/apps/wodss-02-gr-canton-service/fetch_incidence.py --full_dataset --save_to_db
+cd /opt/apps/wodss-02-gr-canton-service/
+/opt/anaconda/envs/WODSS/bin/python3.8 manage.py db upgrade
+/opt/anaconda/envs/WODSS/bin/python3.8 fetch_municipality.py --save_to_db
+/opt/anaconda/envs/WODSS/bin/python3.8 fetch_incidence.py --full_dataset --save_to_db
 
 sudo systemctl enable postgresql
 ```
@@ -243,7 +244,7 @@ sudo systemctl enable postgresql
 ### Step 6 - Setup cronjob (Fetch incidences every 2 hours)
 ```ZSH / CMD
 crontab -e
-0 */2 * * * /opt/anaconda/envs/WODSS/bin/python3.9 /opt/apps/wodss-02-gr-canton-service/fetch_incidence.py --save_to_db
+0 */2 * * * /opt/anaconda/envs/WODSS/bin/python3.8 /opt/apps/wodss-02-gr-canton-service/fetch_incidence.py --save_to_db
 ```
 
 ### Step 7 - Setup Nginx
@@ -339,6 +340,10 @@ git merge '@{u}'
 
 echo -e '\nUpdate conda environment...'
 conda env update --file /opt/apps/wodss-02-gr-canton-service/resources/environment.yml
+
+echo -e '\nUpgrade database...'
+cd /opt/apps/wodss-02-gr-canton-service/
+/opt/anaconda/envs/WODSS/bin/python3.8 manage.py db upgrade
 
 echo -e '\nRestarting canton service...'
 sudo systemctl restart wodss-02-gr-canton-service.service
