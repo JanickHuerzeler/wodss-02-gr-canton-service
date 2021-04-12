@@ -68,13 +68,13 @@ Die `municipality`-Tabelle muss einmalig abgefüllt werden. Folgender Befehl sta
 python fetch_municipality.py --save_to_db
 ```
 
-Für `incidence`-Tabelle muss ein Initla-Import gemacht werden. Folgender Befehl startet den Import via CLI:
+Für `incidence`-Tabelle muss ein Initial-Import gemacht werden. Folgender Befehl startet den Import via CLI:
 
 ```ZSH / CMD
 python fetch_incidence.py --full_dataset --save_to_db
 ```
 
-Für inkrementelle Aktualisierungen (neue Tage einfügen) folgendem Befehl ausüfhren:
+Für inkrementelle Aktualisierungen (neue Tage einfügen) folgenden Befehl ausführen:
 
 ```ZSH / CMD
 python fetch_incidence.py --save_to_db
