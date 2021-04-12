@@ -64,7 +64,7 @@ if df_corona_cases is not None:
     if full_dataset == False:
         df_all_cases_distributed_to_municipalities = df_db_corona_cases.append(
             df_all_cases_distributed_to_municipalities)
-        df_all_cases_distributed_to_municipalities.reset_index()
+        df_all_cases_distributed_to_municipalities.reset_index(inplace=True)
 
     # Calcuate cumsum and incidence of 14 days
     df_cumsum_and_incidence = pcd.calculate_cumsum_and_incidence(df_all_cases_distributed_to_municipalities)

@@ -17,6 +17,8 @@ class ConfigManager:
     __cantonMetadataConfiguration = None
     __application_root = None
 
+    ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
+
     @staticmethod
     def get_instance():
         """ Static access method. """
@@ -28,13 +30,13 @@ class ConfigManager:
         if ConfigManager.__instance is not None:
             raise Exception("This class is a singleton!")
         else:
-            ConfigManager.__instance = self
+            ConfigManager.__instance = self            
         self.logger = logging.getLogger('pywall.' + __name__)
 
         self.load_config(config_path_string)
 
     def load_config(self, config_path_string):
-        self.__configFilePath = os.path.join(os.path.dirname(os.path.realpath(__file__)), config_path_string)
+        self.__configFilePath = os.path.join(os.path.dirname(os.path.realpath(__file__)), config_path_string)        
 
         with open(self.__configFilePath, 'r') as json_data:
             config = json.load(json_data)
