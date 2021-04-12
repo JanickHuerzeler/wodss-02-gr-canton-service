@@ -5,6 +5,9 @@ from configManager import ConfigManager
 application_root = ConfigManager.get_instance().get_application_root()
 
 
+
+# db.session.query(Incidence) müsste hier gemockt werden, damit .filter trotzdem noch getestet wird. 
+
 def test_incidences_base_route(client, app):
     """
     Check if /incidences/ route returns 

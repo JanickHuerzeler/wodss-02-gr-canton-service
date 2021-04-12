@@ -8,9 +8,6 @@ INCIDENCE_POPULATION_REFERENCE = 100_000
 
 def distribute_cases_without_region(df_municipalities, df_cases):
 
-    # ------
-    # TODO: Move this somewhere else?
-
     set_bezirksnamen = set(sorted(df_municipalities['Bezirksname']))  # From Municipality Stammdaten
     set_regionen = set(sorted(df_cases['Region']))  # From Cases, i.e. the region a case belongs to
 
@@ -28,7 +25,6 @@ def distribute_cases_without_region(df_municipalities, df_cases):
                             'Viamala': 'Viamala'}
 
     df_cases['Bezirksname'] = df_cases['Region'].apply(lambda region: dict_bezirks_mapping.get(region))
-    # ------
 
     # Calculate share of population per region in GR
     df_inhabtiants_per_region = df_municipalities.groupby(
