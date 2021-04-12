@@ -229,16 +229,23 @@ source activate WODSS
 
 ```ZSH / CMD
 sudo -u postgres psql postgres
-CREATE DATABASE wodssCantonServiceGR;
+CREATE DATABASE "wodssCantonServiceGR";
 \password postgres (pw: postgres)
 \q
-cd /opt/apps/wodss-02-gr-canton-service
-python3 manage.py db upgrade
+/opt/anaconda/envs/WODSS/bin/python3.8 /opt/apps/wodss-02-gr-canton-service/manage.py db upgrade
+/opt/anaconda/envs/WODSS/bin/python3.8 /opt/apps/wodss-02-gr-canton-service/fetch_municipality.py --save_to_db
+/opt/anaconda/envs/WODSS/bin/python3.8 /opt/apps/wodss-02-gr-canton-service/fetch_incidence.py --full_dataset --save_to_db
 
 sudo systemctl enable postgresql
 ```
 
-### Step 6 - Setup Nginx
+### Step 6 - Setup cronjob (Fetch incidences every 2 hours)
+```ZSH / CMD
+crontab -e
+0 */2 * * * /opt/anaconda/envs/WODSS/bin/python3.8 /opt/apps/wodss-02-gr-canton-service/fetch_incidence.py --save_to_db
+```
+
+### Step 7 - Setup Nginx
 
 First we have to open ports 80+443 on SWITCHEngine: https://bit.ly/3fN5UD0
 
@@ -277,7 +284,7 @@ sudo ln -s /etc/nginx/sites-available/gr.$DOMAIN /etc/nginx/sites-enabled/gr.$DO
 sudo systemctl enable nginx
 ```
 
-### Step 7 - Setup canton service as a system service
+### Step 8 - Setup canton service as a system service
 
 ```ZSH / CMD
 sudo tee /etc/systemd/system/wodss-02-gr-canton-service.service << EOF
@@ -294,7 +301,7 @@ EOF
 sudo systemctl enable wodss-02-gr-canton-service
 ```
 
-### Step 8 - Setup SSL
+### Step 9 - Setup SSL
 
 ```ZSH / CMD
 # Ensure that the version of snapd is up to date
@@ -314,7 +321,7 @@ sudo certbot run -a manual -i nginx -d gr.corona-navigator.ch
 sudo certbot run -a manual -i nginx -d corona-navigator.ch -d www.corona-navigator.ch
 ```
 
-### Step 9 (optional) - Setup FTP
+### Step 10 (optional) - Setup FTP
 
 First we have to open ports 20-21 + 4242-4243 on SWITCHEngine: https://bit.ly/3fN5UD0
 
