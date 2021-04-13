@@ -128,7 +128,7 @@ def test_incidences_for_given_date_to_with_default_datefrom_fallback(client, app
 
 
 @pytest.mark.parametrize("dateFrom, dateTo", [('2020-02-28', '2020-02-27'), ('2021-02-14', '2021-02-13')])
-def test_municipalities_dateFrom_bigger_than_dateTo(client, app, dateFrom, dateTo):
+def test_incidences_datefrom_bigger_than_dateTo(client, app, dateFrom, dateTo):
     """
     Check if we get a 400 status code for /incidences/ if dateFrom is bigger than dateTo
     - 400 status code
@@ -238,7 +238,7 @@ def test_incidences_bfsNr(client, app, dateFrom, dateTo, dayDiff, bfsNr, dateInc
         ('2020-10-30', 551.7826825127335)
     ])
 ])
-def test_incidences_bfsNr_datefrom_bigger_than_dateto(client, app, dateFrom, dateTo, dayDiff, bfsNr, dateIncidences):
+def test_incidences_bfsnr_datefrom_bigger_than_dateto(client, app, dateFrom, dateTo, dayDiff, bfsNr, dateIncidences):
     """
     Check if /incidences/bfsNr?dateFrom=dateFrom&dateTo=dateTo returns 
     a 400 status code and according message if dateFrom is bigger than dateTo
@@ -257,7 +257,7 @@ def test_incidences_bfsNr_datefrom_bigger_than_dateto(client, app, dateFrom, dat
     ('2021-05-25', '2021-05-26', 2, 3506),
     ('2021-05-30', '2021-06-05', 6, 3543)
 ])
-def test_incidences_bfsNr_future_date_ranges(client, app, dateFrom, dateTo, dayDiff, bfsNr):
+def test_incidences_bfsnr_future_date_ranges(client, app, dateFrom, dateTo, dayDiff, bfsNr):
     """
     Check if /incidences/bfsNr?dateFrom=dateFrom&dateTo=dateTo returns 
     a 400 status code and according message if dateFrom is bigger than dateTo
@@ -287,6 +287,19 @@ def test_municipalities_bfsnr_not_found(client, app, bfsNr):
 
 @pytest.mark.parametrize("bfsNr", [35051, 350511, 3505262])
 def test_incidences_bfsnr_wrong_format(client, app, bfsNr):
+    """
+    Check if /municipalities/bfsNr/ returns 
+    invalid format message
+    """
+    url = application_root+'/incidences/'+str(bfsNr)+'/'
+    response = client.get(url)
+    assert response.status_code == 400
+    assert response.headers["Content-Type"] == "text/html; charset=utf-8"
+    expectedMessage = f'Invalid format for parameter "bfsNr"'
+    assert bytes(expectedMessage, encoding='utf8') in response.get_data()
+
+@pytest.mark.parametrize("bfsNr", ["Scharans", "ABC", "35051"])
+def test_incidences_bfsnr_wrong_format_strings(client, app, bfsNr):
     """
     Check if /municipalities/bfsNr/ returns 
     invalid format message

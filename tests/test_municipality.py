@@ -110,6 +110,19 @@ def test_municipalities_bfsnr_wrong_format(client, app, service_mock, bfsNr):
     expectedMessage = f'Invalid format for parameter "bfsNr"'
     assert bytes(expectedMessage, encoding='utf8') in response.get_data()
 
+@pytest.mark.parametrize("bfsNr", ["Scharans", "ABC", "35051"])
+def test_municipalities_bfsnr_wrong_format_strings(client, app, service_mock, bfsNr):
+    """
+    Check if /municipalities/bfsNr/ returns 
+    invalid format message
+    """
+    url = application_root+'/municipalities/'+str(bfsNr)+'/'
+    response = client.get(url)
+    assert response.status_code == 400
+    assert response.headers["Content-Type"] == "text/html; charset=utf-8"
+    expectedMessage = f'Invalid format for parameter "bfsNr"'
+    assert bytes(expectedMessage, encoding='utf8') in response.get_data()
+
 
 @pytest.mark.parametrize("bfsNr, bfsData", [(3506, (42.51, 3506, "GR", "Vaz/Obervaz", 2780)), (3544, (190.14, 3544, "GR", "Berg\u00fcn Filisur", 905))])
 def test_municipalities_bfsnr_data(client, app, service_mock, bfsNr, bfsData):
