@@ -1,8 +1,12 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from configManager import ConfigManager
+import logging
 
 app = Flask(__name__)
+
+logging.basicConfig(filename='wodss-02-gr-canton-service.log', level=logging.DEBUG, format=f'%(asctime)s %(levelname)s %(name)s %(threadName)s : %(message)s')
+
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://%(user)s:\
 %(pw)s@%(host)s:%(port)s/%(db)s' % ConfigManager.get_instance().get_postgres_config()
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
