@@ -3,8 +3,8 @@ from flask import jsonify, request, Blueprint
 from services.IncidenceService import IncidenceService
 from services.ErrorHandlerService import ErrorHandlerService
 from configManager import ConfigManager
+from werkzeug.exceptions import InternalServerError
 import logging
-from setup import app
 
 logger = logging.getLogger(__name__)
 
@@ -19,18 +19,18 @@ def get_all():
     date_from = request.args['dateFrom'] if 'dateFrom' in request.args else datetime.fromtimestamp(
         0).strftime(df)
     date_to = request.args['dateTo'] if 'dateTo' in request.args else datetime.today(
-    ).strftime(df)
+    ).strftime(df)    
 
     logger.info(
         f'GET /incidences/ was called. (date_from: {date_from}, date_to: {date_to})')
 
     # check from- and to date
     if not ErrorHandlerService.check_date_format(date_from):
-        return 'Invalid format for parameter "dateFrom" (required: ' + df + ')', 400
+        return date_bad_request(f'Invalid format for parameter "dateFrom" (required: {df})', None, date_from, None)
     if not ErrorHandlerService.check_date_format(date_to):
-        return 'Invalid format for parameter "dateTo" (required: ' + df + ')', 400
+        return date_bad_request(f'Invalid format for parameter "dateTo" (required: {df})', None, None, date_to)
     if not ErrorHandlerService.check_date_semantic(date_from, date_to):
-        return 'Invalid semantic in dates (required: dateFrom <= dateTo))', 400
+        return date_bad_request('Invalid semantic in dates (required: dateFrom <= dateTo))', None, date_from, date_to)
 
     incidences = IncidenceService.get_all(date_from, date_to)
     return jsonify(incidences)
@@ -52,11 +52,11 @@ def get(bfs_nr):
 
     # check from- and to date
     if not ErrorHandlerService.check_date_format(date_from):
-        return bfs_nr_bad_request(f'Invalid format for parameter "dateFrom" (required: {df})', bfs_nr)
+        return date_bad_request(f'Invalid format for parameter "dateFrom" (required: {df})', bfs_nr, date_from, None)
     if not ErrorHandlerService.check_date_format(date_to):
-        return bfs_nr_bad_request(f'Invalid format for parameter "dateTo" (required: {df})', bfs_nr)
+        return date_bad_request(f'Invalid format for parameter "dateTo" (required: {df})', bfs_nr, None, date_to)
     if not ErrorHandlerService.check_date_semantic(date_from, date_to):
-        return date_bad_request('Invalid semantic in dates (required: dateFrom <= dateTo))', bfs_nr, dateFrom, dateTo)
+        return date_bad_request('Invalid semantic in dates (required: dateFrom <= dateTo))', bfs_nr, date_from, date_to)
 
     incidences = IncidenceService.get(bfs_nr, date_from, date_to)
 
@@ -72,7 +72,11 @@ def bfs_nr_bad_request(error_message, bfs_nr):
 
 
 def date_bad_request(error_message, bfs_nr, date_from, date_to):
-    params = (('bfs_nr:' + bfs_nr) if bfs_nr else '') + \
-        f'date_from: {date_from}, date_to: {date_to})'
+    params = (f'bfs_nr: {bfs_nr}, ' if bfs_nr else '') + \
+        (f'date_from: {date_from}, ' if date_from else '') + \
+        (f'date_to: {date_to}), ' if date_to else '')
+
+    params = params[:-2] if params.endswith(', ') else params
+
     logger.debug(f'{error_message}. ({params})')
     return error_message, 400
