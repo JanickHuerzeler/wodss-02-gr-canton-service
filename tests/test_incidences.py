@@ -222,7 +222,7 @@ def test_incidences_bfsNr(client, app, dateFrom, dateTo, dayDiff, bfsNr, dateInc
     assert response.headers["Content-Type"] == "application/json"
     for i in range(0, dayDiff):
         assert data[i]['bfsNr'] == bfsNr
-        assert (data[i]['date'], data[i]['incidence']) in dateIncidences
+        assert (data[i]['date'], round(data[i]['incidence'],12)) in [(date, round(incidence,12)) for date, incidence in dateIncidences]
 
 
 @pytest.mark.parametrize("dateFrom, dateTo, dayDiff, bfsNr, dateIncidences", [
