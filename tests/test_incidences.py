@@ -222,7 +222,8 @@ def test_incidences_bfsNr(client, app, dateFrom, dateTo, dayDiff, bfsNr, dateInc
     assert response.headers["Content-Type"] == "application/json"
     for i in range(0, dayDiff):
         assert data[i]['bfsNr'] == bfsNr
-        assert (data[i]['date'], round(data[i]['incidence'],12)) in [(date, round(incidence,12)) for date, incidence in dateIncidences]
+        assert (data[i]['date'], round(data[i]['incidence'], 12)) in [
+            (date, round(incidence, 12)) for date, incidence in dateIncidences]
 
 
 @pytest.mark.parametrize("dateFrom, dateTo, dayDiff, bfsNr, dateIncidences", [
@@ -253,26 +254,25 @@ def test_incidences_bfsnr_datefrom_bigger_than_dateto(client, app, dateFrom, dat
 
 
 @pytest.mark.parametrize("dateFrom, dateTo, dayDiff, bfsNr", [
-    ('2021-05-15', '2021-05-15', 1, 3506),
-    ('2021-05-25', '2021-05-26', 2, 3506),
-    ('2021-05-30', '2021-06-05', 6, 3543)
+    ('2022-05-15', '2022-05-15', 1, 3506),
+    ('2022-05-25', '2022-05-26', 2, 3506),
+    ('2022-05-30', '2022-06-05', 6, 3543)
 ])
 def test_incidences_bfsnr_future_date_ranges(client, app, dateFrom, dateTo, dayDiff, bfsNr):
     """
-    Check if /incidences/bfsNr?dateFrom=dateFrom&dateTo=dateTo returns 
-    a 400 status code and according message if dateFrom is bigger than dateTo
+    Check if /incidences/bfsNr?dateFrom=dateFrom&dateTo=dateTo with dates in the future return 200 with empty array
     """
     url = application_root+'/incidences/' + \
         str(bfsNr)+'/?dateFrom='+dateFrom+'&dateTo='+dateTo+''
     response = client.get(url)
-    assert response.status_code == 404
-    assert response.headers["Content-Type"] == "text/html; charset=utf-8"
-    expectedMessage = f'No incidences found for bfsNr {str(bfsNr)}!'
-    assert bytes(expectedMessage, encoding='utf8') in response.get_data()
+    assert response.status_code == 200
+    assert response.headers["Content-Type"] == "application/json"
+    data = response.get_json()
+    assert len(data) == 0    
 
 
 @pytest.mark.parametrize("bfsNr", [350, 35, 3])
-def test_municipalities_bfsnr_not_found(client, app, bfsNr):
+def test_incidences_bfsnr_not_found(client, app, bfsNr):
     """
     Check if /incidences/bfsNr/ returns 
     404 for not found bfsNr
@@ -281,7 +281,7 @@ def test_municipalities_bfsnr_not_found(client, app, bfsNr):
     response = client.get(url)
     assert response.status_code == 404
     assert response.headers["Content-Type"] == "text/html; charset=utf-8"
-    expectedMessage = f'No incidences found for bfsNr {str(bfsNr)}!'
+    expectedMessage = f'No municipality found for bfsNr {bfsNr}.'
     assert bytes(expectedMessage, encoding='utf8') in response.get_data()
 
 
@@ -297,6 +297,7 @@ def test_incidences_bfsnr_wrong_format(client, app, bfsNr):
     assert response.headers["Content-Type"] == "text/html; charset=utf-8"
     expectedMessage = f'Invalid format for parameter "bfsNr"'
     assert bytes(expectedMessage, encoding='utf8') in response.get_data()
+
 
 @pytest.mark.parametrize("bfsNr", ["Scharans", "ABC", "35051"])
 def test_incidences_bfsnr_wrong_format_strings(client, app, bfsNr):
