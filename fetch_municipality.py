@@ -7,7 +7,9 @@
 import argparse
 import modules.process_municipality.db as mdb
 import modules.process_municipality.process_municipality_data as pmd
+import logging
 
+logger = logging.getLogger(__file__)
 
 parser = argparse.ArgumentParser(
     description='Entry point for municipality fetching')
@@ -18,9 +20,14 @@ args = parser.parse_args()
 
 save_to_db: bool = args.save_to_db
 
-print('save_to_db:', save_to_db)
+logger.info(f'CLI for municipality fetching was started. (save_to_db: {save_to_db})')
 
-df_municipalities = pmd.get_municipalities()
+try:
+    df_municipalities = pmd.get_municipalities()
 
-if(save_to_db):
-    mdb.save_to_db(df_municipalities)
+    if(save_to_db):
+        mdb.save_to_db(df_municipalities)
+
+    logger.info(f'CLI for municipality fetching has ended. (save_to_db: {save_to_db}, number of municipalities: {len(df_municipalities)})')
+except Exception:
+    logger.exception('Unhandled exception in CLI for municipality fetching.')
