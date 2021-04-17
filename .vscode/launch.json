@@ -28,6 +28,16 @@
                 "--save_to_db"
             ],
             "console": "integratedTerminal"
+        },
+        {
+            "name": "fetch_incidence CLI (save to db)",
+            "type": "python",
+            "request": "launch",
+            "program": "fetch_incidence.py",
+            "args": [
+                "--save_to_db"
+            ],
+            "console": "integratedTerminal"
         }
     ]
 }
