@@ -16,6 +16,7 @@ def get_all():
         f'GET /municipalities/ was called.')
 
     municipalities = MunicipalityService.get_all()
+    logger.debug(f'Found {len(municipalities)} municpalities.')
     return jsonify(municipalities)
 
 
@@ -23,7 +24,7 @@ def get_all():
 def get(bfs_nr):
 
     logger.info(
-        f'GET /municipalities/<bfs_nr>/ was called. (bfs_nr: {bfs_nr}')
+        f'GET /municipalities/<bfs_nr>/ was called. (bfs_nr: {bfs_nr})')
 
     # check bfs_nr format
     if not ErrorHandlerService.check_bfs_nr_format(bfs_nr):
@@ -34,8 +35,9 @@ def get(bfs_nr):
     municipalities = MunicipalityService.get(bfs_nr)
 
     if municipalities:
+        logger.debug(f'Found {len(municipalities)} municipality for bfsNr {bfs_nr}')
         return jsonify(municipalities)
     else:
-        error_message = f'No municipality found for bfsNr {bfs_nr}!'
+        error_message = f'No municipality found for bfsNr {bfs_nr}.'
         logger.debug(error_message)
         return error_message, 404
