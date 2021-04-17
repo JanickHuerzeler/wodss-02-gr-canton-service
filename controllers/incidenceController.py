@@ -1,6 +1,7 @@
 from datetime import datetime
 from flask import jsonify, request, Blueprint
 from services.IncidenceService import IncidenceService
+from services.MunicipalityService import MunicipalityService
 from services.ErrorHandlerService import ErrorHandlerService
 from configManager import ConfigManager
 from werkzeug.exceptions import InternalServerError
@@ -19,7 +20,7 @@ def get_all():
     date_from = request.args['dateFrom'] if 'dateFrom' in request.args else datetime.fromtimestamp(
         0).strftime(df)
     date_to = request.args['dateTo'] if 'dateTo' in request.args else datetime.today(
-    ).strftime(df)    
+    ).strftime(df)
 
     logger.info(
         f'GET /incidences/ was called. (date_from: {date_from}, date_to: {date_to})')
@@ -33,6 +34,7 @@ def get_all():
         return date_bad_request('Invalid semantic in dates (required: dateFrom <= dateTo))', None, date_from, date_to)
 
     incidences = IncidenceService.get_all(date_from, date_to)
+
     return jsonify(incidences)
 
 
@@ -58,12 +60,18 @@ def get(bfs_nr):
     if not ErrorHandlerService.check_date_semantic(date_from, date_to):
         return date_bad_request('Invalid semantic in dates (required: dateFrom <= dateTo))', bfs_nr, date_from, date_to)
 
+    # Check if municipality exists for given bfs_nr
+    municipality = MunicipalityService.get(bfs_nr)
+    if not municipality:
+        error_message = f'No municipality found for bfsNr {bfs_nr}.'
+        logger.debug(error_message)
+        return error_message, 404
+
     incidences = IncidenceService.get(bfs_nr, date_from, date_to)
 
-    if incidences:
-        return jsonify(incidences)
-    else:
-        return 'No incidences found for bfsNr ' + bfs_nr + '!', 404
+    logger.debug(
+        f'Found {len(incidences)} incidences for given bfsNr. (bfsNr: {bfs_nr}, date_from: {date_from}, date_to: {date_to})')
+    return jsonify(incidences)
 
 
 def bfs_nr_bad_request(error_message, bfs_nr):
