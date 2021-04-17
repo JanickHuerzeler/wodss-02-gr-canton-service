@@ -101,6 +101,6 @@ try:
             idb.save_to_db(df_cumsum_and_incidence)
 
     logger.info(
-    f'CLI for incidence fetching and calculation has ended. (save_to_db: {save_to_db}, full_dataset: {full_dataset}, new rows fetched: {len(df_corona_cases) if df_corona_cases else None}, new rows after processing: {df_cumsum_and_incidence_length}, sum new cases: {sum_new_cases})')
+    f'CLI for incidence fetching and calculation has ended. (save_to_db: {save_to_db}, full_dataset: {full_dataset}, new rows fetched: {len(df_corona_cases) if df_corona_cases is not None else None}, new rows after processing: {df_cumsum_and_incidence_length}, sum new cases: {sum_new_cases})')
 except Exception:
     logger.exception('Unhandled exception in CLI for incidence fetching and calculation.')
