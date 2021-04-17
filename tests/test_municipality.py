@@ -93,7 +93,7 @@ def test_municipalities_bfsnr_not_found(client, app, service_mock, bfsNr):
     response = client.get(url)
     assert response.status_code == 404
     assert response.headers["Content-Type"] == "text/html; charset=utf-8"
-    expectedMessage = f'No municipality found for bfsNr {str(bfsNr)}!'
+    expectedMessage = f'No municipality found for bfsNr {str(bfsNr)}.'
     assert bytes(expectedMessage, encoding='utf8') in response.get_data()
 
 
@@ -149,4 +149,4 @@ def test_municipalities_inexistent_bfsNr(client, app, service_mock):
     response = client.get(url)
     assert response.status_code == 404
     assert response.headers["Content-Type"] == "text/html; charset=utf-8"
-    assert b'No municipality found for bfsNr 6621!' in response.get_data()
+    assert b'No municipality found for bfsNr 6621.' in response.get_data()
