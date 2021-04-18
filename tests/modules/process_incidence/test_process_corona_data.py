@@ -157,12 +157,12 @@ def test_calculate_cumsum_and_incidence_edge_days_with_non_zero():
     result_cases_distributed_by_gemeinde = pd.read_csv(
         'tests/modules/process_incidence/testdata/corona_cases_gr_distributed_per_municipality.csv', sep=';')
 
-    bfs_nr = 3871 # Population of 3871 is: 4451
+    bfs_nr = 3871  # Population of 3871 is: 4451
     date_from = '2020-03-20'
     date_to = '2020-04-20'
     test_data = result_cases_distributed_by_gemeinde[(result_cases_distributed_by_gemeinde['BFS_Nr'] == bfs_nr) &
                                                      (result_cases_distributed_by_gemeinde['Datum'] >= date_from) &
-                                                     (result_cases_distributed_by_gemeinde['Datum'] <= date_to)]
+                                                     (result_cases_distributed_by_gemeinde['Datum'] <= date_to)].copy()
 
     calc_date = '2020-04-08'
     rolling_sum = 7.0
@@ -171,9 +171,9 @@ def test_calculate_cumsum_and_incidence_edge_days_with_non_zero():
     # When
     result = calculate_cumsum_and_incidence(test_data)
 
-    result_row = result[(result['BFS_Nr'] == bfs_nr) &
-                        (result['Datum'] == calc_date)
-                        ]
+    result_row = result.loc[(result['BFS_Nr'] == bfs_nr) &
+                            (result['Datum'] == calc_date)
+                            ].copy()
 
     # Then
     assert 'Rolling_Sum' in result.columns
@@ -188,12 +188,12 @@ def test_calculate_cumsum_and_incidence_first_day_of_sequence():
     result_cases_distributed_by_gemeinde = pd.read_csv(
         'tests/modules/process_incidence/testdata/corona_cases_gr_distributed_per_municipality.csv', sep=';')
 
-    bfs_nr = 3871 # Population of 3871 is: 4451
+    bfs_nr = 3871  # Population of 3871 is: 4451
     date_from = '2020-03-20'
     date_to = '2020-04-20'
-    test_data = result_cases_distributed_by_gemeinde[(result_cases_distributed_by_gemeinde['BFS_Nr'] == bfs_nr) &
-                                                     (result_cases_distributed_by_gemeinde['Datum'] >= date_from) &
-                                                     (result_cases_distributed_by_gemeinde['Datum'] <= date_to)]
+    test_data = result_cases_distributed_by_gemeinde.loc[(result_cases_distributed_by_gemeinde['BFS_Nr'] == bfs_nr) &
+                                                         (result_cases_distributed_by_gemeinde['Datum'] >= date_from) &
+                                                         (result_cases_distributed_by_gemeinde['Datum'] <= date_to)].copy()
 
     calc_date = '2020-03-20'
     rolling_sum = 0
@@ -202,9 +202,9 @@ def test_calculate_cumsum_and_incidence_first_day_of_sequence():
     # When
     result = calculate_cumsum_and_incidence(test_data)
 
-    result_row = result[(result['BFS_Nr'] == bfs_nr) &
-                        (result['Datum'] == calc_date)
-                        ]
+    result_row = result.loc[(result['BFS_Nr'] == bfs_nr) &
+                            (result['Datum'] == calc_date)
+                            ].copy()
 
     # Then
     assert 'Rolling_Sum' in result.columns

@@ -27,8 +27,13 @@ def test_incidences_base_route(client, app):
     - correct content-type "application/json"
     - status code 200
     """
+    # Given
     url = application_root+'/incidences/'
+
+    # When
     response = client.get(url)
+
+    # Then
     assert response.status_code == 200
     assert response.headers["Content-Type"] == "application/json"
 
@@ -45,9 +50,14 @@ def test_incidences_without_datefrom_dateto_params(client, app):
     - each bfsNr is given
     - each incidence is given
     """
+    # Given
     url = application_root+'/incidences/'
+
+    # When
     response = client.get(url)
     data = response.get_json()
+
+    # Then
     assert len(data) == NUMBER_OF_MUNICIPALITIES_IN_GR * \
         DAYS_OF_MEASURES_IN_TEST_DATA_SET
     for i in range(0, NUMBER_OF_MUNICIPALITIES_IN_GR*DAYS_OF_MEASURES_IN_TEST_DATA_SET):
@@ -69,9 +79,14 @@ def test_incidences_for_one_day(client, app, test_date):
     - each bfsNr is given
     - each incidence is given
     """
+    # Given
     url = application_root+'/incidences/?dateFrom='+test_date+'&dateTo='+test_date
+
+    # When
     response = client.get(url)
     data = response.get_json()
+
+    # Then
     assert len(data) == NUMBER_OF_MUNICIPALITIES_IN_GR
     for i in range(0, NUMBER_OF_MUNICIPALITIES_IN_GR):
         assert data[i]['bfsNr'] is not None
@@ -85,9 +100,14 @@ def test_incidences_for_current_date_empty(client, app, dateFrom):
     Check if dateFrom=Future Date (2021-04-11 as last measure date of test data set) returns 
     - an empty list
     """
+    # Given
     url = application_root+'/incidences/?dateFrom='+dateFrom+''
+
+    # When
     response = client.get(url)
     data = response.get_json()
+
+    # Then
     assert data == []
     assert response.status_code == 200
     assert response.headers["Content-Type"] == "application/json"
@@ -100,8 +120,13 @@ def test_incidences_for_future_datefrom_with_default_dateto_fallback_today(clien
     by default dateTo gets set to today's date. Therefore we should get
     a 400 response due to invalid date condition (dateFrom <= dateTo).
     """
+    # Given
     url = application_root+'/incidences/?dateFrom='+dateFrom+''
+
+    # When
     response = client.get(url)
+
+    # Then
     assert response.status_code == 400
     assert response.headers["Content-Type"] == "text/html; charset=utf-8"
     assert b'Invalid semantic in dates (required: dateFrom <= dateTo))' in response.get_data(
@@ -115,8 +140,13 @@ def test_incidences_for_given_date_to_with_default_datefrom_fallback(client, app
     by default dateTo gets set to today's date. Therefore we should get
     a 400 response due to invalid date condition (dateFrom <= dateTo).
     """
+    # Given
     url = application_root+'/incidences/?dateTo='+dateTo+''
+
+    # When
     response = client.get(url)
+
+    # Then
     assert response.status_code == 200
     assert response.headers["Content-Type"] == "application/json"
     data = response.get_json()
@@ -134,8 +164,13 @@ def test_incidences_datefrom_bigger_than_dateTo(client, app, dateFrom, dateTo):
     - 400 status code
     - correct content-type
     """
+    # Given
     url = application_root+'/incidences/?dateFrom='+dateFrom+'&dateTo='+dateTo+''
+
+    # When
     response = client.get(url)
+
+    # Then
     assert response.status_code == 400
     assert response.headers["Content-Type"] == "text/html; charset=utf-8"
     assert b'Invalid semantic in dates (required: dateFrom <= dateTo))' in response.get_data(
@@ -148,9 +183,14 @@ def test_incidences_for_future_day_ranges(client, app, dateFrom, dateTo):
     Check if we get an OK status code (200) and empty responses for valid,
     but future date ranges for which no data exists yet.
     """
+    # Given
     url = application_root+'/incidences/?dateFrom='+dateFrom+'&dateTo='+dateTo+''
+
+    # When
     response = client.get(url)
     data = response.get_json()
+
+    # Then
     assert data == []
     assert response.status_code == 200
     assert response.headers["Content-Type"] == "application/json"
@@ -169,9 +209,14 @@ def test_incidences_for_one_day(client, app, dateFrom, dateTo, dayDiff):
     - each bfsNr is given
     - each incidence is given
     """
+    # Given
     url = application_root+'/incidences/?dateFrom='+dateFrom+'&dateTo='+dateTo+''
+
+    # When
     response = client.get(url)
     data = response.get_json()
+
+    # Then
     assert response.status_code == 200
     assert response.headers["Content-Type"] == "application/json"
     assert len(data) == NUMBER_OF_MUNICIPALITIES_IN_GR*dayDiff
@@ -214,10 +259,15 @@ def test_incidences_bfsNr(client, app, dateFrom, dateTo, dayDiff, bfsNr, dateInc
     - each bfsNr is given
     - each incidence is given
     """
+    # Given
     url = application_root+'/incidences/' + \
         str(bfsNr)+'/?dateFrom='+dateFrom+'&dateTo='+dateTo+''
+
+    # When
     response = client.get(url)
     data = response.get_json()
+
+    # Then
     assert response.status_code == 200
     assert response.headers["Content-Type"] == "application/json"
     for i in range(0, dayDiff):
@@ -244,9 +294,14 @@ def test_incidences_bfsnr_datefrom_bigger_than_dateto(client, app, dateFrom, dat
     Check if /incidences/bfsNr?dateFrom=dateFrom&dateTo=dateTo returns 
     a 400 status code and according message if dateFrom is bigger than dateTo
     """
+    # Given
     url = application_root+'/incidences/' + \
         str(bfsNr)+'/?dateFrom='+dateFrom+'&dateTo='+dateTo+''
+
+    # When
     response = client.get(url)
+
+    # Then
     assert response.status_code == 400
     assert response.headers["Content-Type"] == "text/html; charset=utf-8"
     assert b'Invalid semantic in dates (required: dateFrom <= dateTo))' in response.get_data(
@@ -262,13 +317,18 @@ def test_incidences_bfsnr_future_date_ranges(client, app, dateFrom, dateTo, dayD
     """
     Check if /incidences/bfsNr?dateFrom=dateFrom&dateTo=dateTo with dates in the future return 200 with empty array
     """
+    # Given
     url = application_root+'/incidences/' + \
         str(bfsNr)+'/?dateFrom='+dateFrom+'&dateTo='+dateTo+''
+
+    # When
     response = client.get(url)
+
+    # Then
     assert response.status_code == 200
     assert response.headers["Content-Type"] == "application/json"
     data = response.get_json()
-    assert len(data) == 0    
+    assert len(data) == 0
 
 
 @pytest.mark.parametrize("bfsNr", [350, 35, 3])
@@ -277,8 +337,13 @@ def test_incidences_bfsnr_not_found(client, app, bfsNr):
     Check if /incidences/bfsNr/ returns 
     404 for not found bfsNr
     """
+    # Given
     url = application_root+'/incidences/'+str(bfsNr)+'/'
+
+    # When
     response = client.get(url)
+
+    # Then
     assert response.status_code == 404
     assert response.headers["Content-Type"] == "text/html; charset=utf-8"
     expectedMessage = f'No municipality found for bfsNr {bfsNr}.'
@@ -291,8 +356,13 @@ def test_incidences_bfsnr_wrong_format(client, app, bfsNr):
     Check if /municipalities/bfsNr/ returns 
     invalid format message
     """
+    # Given
     url = application_root+'/incidences/'+str(bfsNr)+'/'
+
+    # When
     response = client.get(url)
+
+    # Then
     assert response.status_code == 400
     assert response.headers["Content-Type"] == "text/html; charset=utf-8"
     expectedMessage = f'Invalid format for parameter "bfsNr"'
@@ -305,8 +375,13 @@ def test_incidences_bfsnr_wrong_format_strings(client, app, bfsNr):
     Check if /municipalities/bfsNr/ returns 
     invalid format message
     """
+    # Given
     url = application_root+'/incidences/'+str(bfsNr)+'/'
+
+    # When
     response = client.get(url)
+
+    # Then
     assert response.status_code == 400
     assert response.headers["Content-Type"] == "text/html; charset=utf-8"
     expectedMessage = f'Invalid format for parameter "bfsNr"'

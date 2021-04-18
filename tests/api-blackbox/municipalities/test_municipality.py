@@ -46,8 +46,13 @@ def test_municipalities_base_route(client, app, service_mock):
     - correct content-type "application/json"
     - status code 200
     """
+    # Given
     url = application_root+'/municipalities/'
+
+    # When
     response = client.get(url)
+
+    # Then
     assert response.status_code == 200
     assert response.headers["Content-Type"] == "application/json"
     data = response.get_json()
@@ -60,9 +65,14 @@ def test_municipalities_base_all_data(client, app, service_mock, bfsData):
     Check if /municipalities/ without filtering returns 
     the correct data
     """
+    # Given
     url = application_root+'/municipalities/'
+
+    # When
     response = client.get(url)
     data = response.get_json()
+
+    # Then
     for i in range(0, NUMBER_OF_MOCKED_MUNICIPALITIES):
         assert (data[i]['area'], data[i]['bfsNr'], data[i]['canton'],
                 data[i]['name'], data[i]['population']) in bfsData
@@ -77,8 +87,13 @@ def test_municipalities_filisur_request_statuscode_contenttype(client, app, serv
     - correct content-type "application/json"
     - status code 200
     """
+    # Given
     url = application_root+'/municipalities/3544/'
+
+    # When
     response = client.get(url)
+
+    # Then
     assert response.status_code == 200
     assert response.headers["Content-Type"] == "application/json"
 
@@ -89,8 +104,13 @@ def test_municipalities_bfsnr_not_found(client, app, service_mock, bfsNr):
     Check if /municipalities/bfsNr/ returns 
     404 for not found bfsNr
     """
+    # Given
     url = application_root+'/municipalities/'+str(bfsNr)+'/'
+
+    # When
     response = client.get(url)
+
+    # Then
     assert response.status_code == 404
     assert response.headers["Content-Type"] == "text/html; charset=utf-8"
     expectedMessage = f'No municipality found for bfsNr {str(bfsNr)}.'
@@ -103,12 +123,18 @@ def test_municipalities_bfsnr_wrong_format(client, app, service_mock, bfsNr):
     Check if /municipalities/bfsNr/ returns 
     invalid format message
     """
+    # Given
     url = application_root+'/municipalities/'+str(bfsNr)+'/'
+
+    # When
     response = client.get(url)
+
+    # Then
     assert response.status_code == 400
     assert response.headers["Content-Type"] == "text/html; charset=utf-8"
     expectedMessage = f'Invalid format for parameter "bfsNr"'
     assert bytes(expectedMessage, encoding='utf8') in response.get_data()
+
 
 @pytest.mark.parametrize("bfsNr", ["Scharans", "ABC", "35051"])
 def test_municipalities_bfsnr_wrong_format_strings(client, app, service_mock, bfsNr):
@@ -116,8 +142,13 @@ def test_municipalities_bfsnr_wrong_format_strings(client, app, service_mock, bf
     Check if /municipalities/bfsNr/ returns 
     invalid format message
     """
+    # Given
     url = application_root+'/municipalities/'+str(bfsNr)+'/'
+
+    # When
     response = client.get(url)
+
+    # Then
     assert response.status_code == 400
     assert response.headers["Content-Type"] == "text/html; charset=utf-8"
     expectedMessage = f'Invalid format for parameter "bfsNr"'
@@ -130,9 +161,14 @@ def test_municipalities_bfsnr_data(client, app, service_mock, bfsNr, bfsData):
     Check if /municipalities/bfsNr/ returns 
     - the correct details (as of 01.01.2021) for the municipality "Bergün Filisur"
     """
+    # Given
     url = application_root+'/municipalities/'+str(bfsNr)+'/'
+
+    # When
     response = client.get(url)
     data = response.get_json()[0]
+
+    # Then
     assert (data['area'], data['bfsNr'], data['canton'],
             data['name'], data['population']) in [bfsData]
     assert response.status_code == 200
@@ -145,8 +181,13 @@ def test_municipalities_inexistent_bfsNr(client, app, service_mock):
     - 404 status code
     - correct content-type
     """
+    # Given
     url = application_root+'/municipalities/6621/'
+
+    # When
     response = client.get(url)
+
+    # Then
     assert response.status_code == 404
     assert response.headers["Content-Type"] == "text/html; charset=utf-8"
     assert b'No municipality found for bfsNr 6621.' in response.get_data()

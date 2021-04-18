@@ -138,9 +138,9 @@ def get_choices_for_faelle(gemeinden, faelle: int, flaeche):
 def calculate_cumsum_and_incidence(df_cases_distributed_per_municipality):
 
     # Add new column for rolling 14 days sum to dataframe
-    df_cases_distributed_per_municipality['Rolling_Sum'] = 0
+    df_cases_distributed_per_municipality.loc[:, 'Rolling_Sum'] = 0
     # Add new column for  14 days incidence to dataframe
-    df_cases_distributed_per_municipality['14d_Incidence'] = 0
+    df_cases_distributed_per_municipality.loc[:, '14d_Incidence'] = 0
 
     for gemeinde in df_cases_distributed_per_municipality['Gemeindename'].unique():
         print("Calculate cumsum and incidence for Gemeinde: {}".format(gemeinde))
@@ -169,6 +169,6 @@ def calculate_cumsum_and_incidence(df_cases_distributed_per_municipality):
 
     return df_cases_distributed_per_municipality
 
+
 def calculate_incidence(series_rolling_sum: pd.Series, series_population: pd.Series):
     return (series_rolling_sum / series_population) * INCIDENCE_POPULATION_REFERENCE
-
