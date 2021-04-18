@@ -13,6 +13,8 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://%(user)s:\
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 
+app.config['JSON_SORT_KEYS'] = False
+
 db = SQLAlchemy(app)
 
 
@@ -24,5 +26,5 @@ def get_test_app():
     global db, app
     # app = Flask(__name__)
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///:memory:'
-    db = SQLAlchemy(app) # overwrite the postgresql settings, as db gets referenced by services
+    db = SQLAlchemy(app)  # overwrite the postgresql settings, as db gets referenced by services
     return app
