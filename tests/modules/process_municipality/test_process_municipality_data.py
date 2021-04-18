@@ -1,8 +1,5 @@
 import pytest
-import os
-import math
 import pandas as pd
-from pandas.testing import assert_series_equal, assert_frame_equal
 from modules.process_municipality.process_municipality_data import get_municipalities
 
 def test_get_municipalities(monkeypatch):
