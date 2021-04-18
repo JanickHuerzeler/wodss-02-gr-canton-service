@@ -48,16 +48,16 @@ def get(bfs_nr):
     logger.info(
         f'GET /incidences/<bfs_nr>/ was called. (bfs_nr: {bfs_nr}, date_from: {date_from}, date_to: {date_to})')
 
+    # check bfs_nr format
+    if not ErrorHandlerService.check_bfs_nr_format(bfs_nr):
+        return bfs_nr_bad_request('Invalid format for parameter "bfsNr" (required: 4-digit number)', bfs_nr)
+
     # Check if municipality exists for given bfs_nr
     municipality = MunicipalityService.get(bfs_nr)
     if not municipality:
         error_message = f'No municipality found for bfsNr {bfs_nr}.'
         logger.debug(error_message)
         return error_message, 404
-
-    # check bfs_nr format
-    if not ErrorHandlerService.check_bfs_nr_format(bfs_nr):
-        return bfs_nr_bad_request('Invalid format for parameter "bfsNr" (required: 4-digit number)', bfs_nr)
 
     # check from- and to date
     if not ErrorHandlerService.check_date_format(date_from):
