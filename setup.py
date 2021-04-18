@@ -3,9 +3,13 @@ from flask_sqlalchemy import SQLAlchemy
 from configManager import ConfigManager
 import logging
 import logging.config
+from os import path
 
 app = Flask(__name__)
-logging.config.fileConfig(fname='log.conf')
+
+log_file_path = path.join(path.dirname(path.abspath(__file__)), 'log.conf')
+print(log_file_path)
+logging.config.fileConfig(log_file_path)
 #logging.basicConfig(filename='wodss-02-gr-canton-service.log', level=logging.DEBUG, format=f'%(asctime)s %(levelname)s %(name)s %(threadName)s : %(message)s')
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://%(user)s:\
@@ -26,5 +30,6 @@ def get_test_app():
     global db, app
     # app = Flask(__name__)
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///:memory:'
-    db = SQLAlchemy(app)  # overwrite the postgresql settings, as db gets referenced by services
+    # overwrite the postgresql settings, as db gets referenced by services
+    db = SQLAlchemy(app)
     return app
