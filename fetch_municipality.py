@@ -8,13 +8,9 @@ import argparse
 import modules.process_municipality.db as mdb
 import modules.process_municipality.process_municipality_data as pmd
 import logging
-from os import path
 
 # Read logger config (CLI is directly callable!)
-log_file_path = path.join(path.dirname(path.abspath(__file__)), 'log.conf')
-print(log_file_path)
-logging.config.fileConfig(log_file_path)
-
+logging.config.fileConfig(fname='log.conf')
 logger = logging.getLogger(__file__)
 
 parser = argparse.ArgumentParser(

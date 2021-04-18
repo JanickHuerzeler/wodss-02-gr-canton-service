@@ -244,7 +244,7 @@ sudo systemctl enable postgresql
 ### Step 6 - Setup cronjob (Fetch incidences every 2 hours)
 ```ZSH / CMD
 crontab -e
-0 */2 * * * /opt/anaconda/envs/WODSS/bin/python3.8 /opt/apps/wodss-02-gr-canton-service/fetch_incidence.py --save_to_db
+0 */2 * * * cd /opt/apps/wodss-02-gr-canton-service && /opt/anaconda/envs/WODSS/bin/python3.8 fetch_incidence.py --save_to_db
 ```
 
 ### Step 7 - Setup Nginx
