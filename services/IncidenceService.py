@@ -7,7 +7,8 @@ from sqlalchemy import and_
 class IncidenceService:
     @staticmethod
     def get_all(date_from, date_to) -> List[Incidence]:
-        incidences = db.session.query(Incidence).filter(Incidence.date.between(date_from, date_to))
+        incidences = db.session.query(Incidence).filter(Incidence.date.between(
+            date_from, date_to)).order_by(Incidence.date.asc(), Incidence.bfsNr.asc())
 
         result = []
         for i in incidences:
