@@ -48,6 +48,13 @@ def get(bfs_nr):
     logger.info(
         f'GET /incidences/<bfs_nr>/ was called. (bfs_nr: {bfs_nr}, date_from: {date_from}, date_to: {date_to})')
 
+    # Check if municipality exists for given bfs_nr
+    municipality = MunicipalityService.get(bfs_nr)
+    if not municipality:
+        error_message = f'No municipality found for bfsNr {bfs_nr}.'
+        logger.debug(error_message)
+        return error_message, 404
+
     # check bfs_nr format
     if not ErrorHandlerService.check_bfs_nr_format(bfs_nr):
         return bfs_nr_bad_request('Invalid format for parameter "bfsNr" (required: 4-digit number)', bfs_nr)
@@ -59,13 +66,6 @@ def get(bfs_nr):
         return date_bad_request(f'Invalid format for parameter "dateTo" (required: {df})', bfs_nr, None, date_to)
     if not ErrorHandlerService.check_date_semantic(date_from, date_to):
         return date_bad_request('Invalid semantic in dates (required: dateFrom <= dateTo))', bfs_nr, date_from, date_to)
-
-    # Check if municipality exists for given bfs_nr
-    municipality = MunicipalityService.get(bfs_nr)
-    if not municipality:
-        error_message = f'No municipality found for bfsNr {bfs_nr}.'
-        logger.debug(error_message)
-        return error_message, 404
 
     incidences = IncidenceService.get(bfs_nr, date_from, date_to)
 
