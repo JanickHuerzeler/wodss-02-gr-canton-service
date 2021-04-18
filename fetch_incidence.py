@@ -14,6 +14,8 @@ import modules.process_municipality.process_municipality_data as pmd
 import modules.process_incidence.db as idb
 import logging
 
+# Read logger config (CLI is directly callable!)
+logging.config.fileConfig(fname='log.conf')
 logger = logging.getLogger(__file__)
 
 parser = argparse.ArgumentParser(
