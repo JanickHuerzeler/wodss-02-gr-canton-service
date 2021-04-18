@@ -13,9 +13,12 @@ import modules.process_incidence.process_corona_data as pcd
 import modules.process_municipality.process_municipality_data as pmd
 import modules.process_incidence.db as idb
 import logging
+from os import path
 
 # Read logger config (CLI is directly callable!)
-logging.config.fileConfig(fname='log.conf')
+log_file_path = path.join(path.dirname(path.abspath(__file__)), 'log.conf')
+logging.config.fileConfig(log_file_path)
+
 logger = logging.getLogger(__file__)
 
 parser = argparse.ArgumentParser(
