@@ -2,6 +2,10 @@
 # Created by https://www.toptal.com/developers/gitignore/api/python,flask,macos,windows,pycharm,vscode
 # Edit at https://www.toptal.com/developers/gitignore?templates=python,flask,macos,windows,pycharm,vscode
 
+### Logging ###
+# Backup files with timestamp
+*.log.[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]_[0-9][0-9]
+
 ### Flask ###
 instance/*
 !instance/.gitignore
