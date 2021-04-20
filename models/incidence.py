@@ -8,7 +8,7 @@ class Incidence(db.Model):
     incidencesId = db.Column(db.Integer, primary_key=True, autoincrement=True)
     bfsNr = db.Column(db.Integer, db.ForeignKey("municipality.bfsNr"), nullable=False)
     date = db.Column(db.Date, nullable=False)
-    cases = db.Column(db.Integer, nullable=False)
+    cases = db.Column(db.Integer, nullable=True)
     cases_cumsum_14d = db.Column(db.Integer, nullable=False)
     incidence = db.Column(db.Float, nullable=False)
     __table_args__ = (db.UniqueConstraint('bfsNr', 'date', name='_bfsNr_date_uc'),)

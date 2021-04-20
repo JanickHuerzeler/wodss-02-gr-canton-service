@@ -36,16 +36,18 @@ try:
     now = datetime.now()
     now = now.replace(hour=0, minute=0, second=0, microsecond=0)
 
-    if full_dataset:    
+    if full_dataset:
         earliest_date_with_data = datetime(2020, 2, 26, 0, 0)
-        logger.debug(f'Getting corona cases from GR API. (dateFrom: {earliest_date_with_data}, dateTo: {now})')
+        logger.debug(
+            f'Getting corona cases from GR API. (dateFrom: {earliest_date_with_data}, dateTo: {now})')
         df_corona_cases = fcd.get_corona_cases(earliest_date_with_data, now)
     else:
         # Check the last fetch date in DB
         last_fetch_date = idb.get_last_import_date()
         last_fetch_date = datetime(
             last_fetch_date.year, last_fetch_date.month, last_fetch_date.day, 0, 0)
-        logger.debug(f'Getting corona cases from GR API. (dateFrom: {last_fetch_date}, dateTo: {now})')
+        logger.debug(
+            f'Getting corona cases from GR API. (dateFrom: {last_fetch_date}, dateTo: {now})')
         # Fetch difference to now
         df_corona_cases = fcd.get_corona_cases(
             last_fetch_date + timedelta(days=1), now)
@@ -78,7 +80,32 @@ try:
         if full_dataset == False:
             df_all_cases_distributed_to_municipalities = df_db_corona_cases.append(
                 df_all_cases_distributed_to_municipalities)
-            df_all_cases_distributed_to_municipalities.reset_index(inplace=True)
+            df_all_cases_distributed_to_municipalities.reset_index(
+                inplace=True)
+
+        # Append  df_all_cases_distributed_to_municipalities
+
+        max_date_cases = df_all_cases_distributed_to_municipalities['Datum'].max(
+        )
+        df_max_date_rows = df_all_cases_distributed_to_municipalities[
+            df_all_cases_distributed_to_municipalities['Datum'] == max_date_cases].copy()
+
+        iter_date = max_date_cases + timedelta(days=1)
+        end_date = now
+        delta = timedelta(days=1)
+        while iter_date <= end_date:
+            print(f'iter_date: {iter_date}')
+            df_new_rows = df_max_date_rows.copy()
+            df_new_rows['Datum'] = iter_date
+            df_new_rows['Neue_Faelle_Gemeinde'] = None
+            df_new_rows['Neue_Faelle_Region'] = None
+            df_new_rows['Rolling_Sum'] = 0
+            df_new_rows['14d_Incidence'] = 0
+
+            df_all_cases_distributed_to_municipalities = df_all_cases_distributed_to_municipalities.append(
+                df_new_rows, ignore_index=True)
+
+            iter_date += delta        
 
         # Calcuate cumsum and incidence of 14 days
         df_cumsum_and_incidence = pcd.calculate_cumsum_and_incidence(
@@ -94,15 +121,21 @@ try:
         df_cumsum_and_incidence_length = len(df_cumsum_and_incidence)
         sum_new_cases = df_cumsum_and_incidence['Neue_Faelle_Gemeinde'].sum()
 
-        logger.debug(f'Sum of cases received by GR API: {sum_cases_recevied_by_api}')
-        logger.debug(f'Sum of cases after distribution of cases without region: {sum_cases_after_assigment_of_without_region}')
-        logger.debug(f'Sum of cases after distribution from region to municipalities: {sum_cases_after_municipality_distribution}')
-        logger.debug(f'Sum of cases after incidence and cumsum calculation: {sum_new_cases}')    
+        logger.debug(
+            f'Sum of cases received by GR API: {sum_cases_recevied_by_api}')
+        logger.debug(
+            f'Sum of cases after distribution of cases without region: {sum_cases_after_assigment_of_without_region}')
+        logger.debug(
+            f'Sum of cases after distribution from region to municipalities: {sum_cases_after_municipality_distribution}')
+        logger.debug(
+            f'Sum of cases after incidence and cumsum calculation: {sum_new_cases}')
 
         if(save_to_db):
+            idb.delete_where_cases_is_null(set(df_cumsum_and_incidence['Datum']))
             idb.save_to_db(df_cumsum_and_incidence)
 
     logger.info(
-    f'CLI for incidence fetching and calculation has ended. (save_to_db: {save_to_db}, full_dataset: {full_dataset}, new rows fetched: {len(df_corona_cases) if df_corona_cases is not None else None}, new rows after processing: {df_cumsum_and_incidence_length}, sum new cases: {sum_new_cases})')
+        f'CLI for incidence fetching and calculation has ended. (save_to_db: {save_to_db}, full_dataset: {full_dataset}, new rows fetched: {len(df_corona_cases) if df_corona_cases is not None else None}, new rows after processing: {df_cumsum_and_incidence_length}, sum new cases: {sum_new_cases})')
 except Exception:
-    logger.exception('Unhandled exception in CLI for incidence fetching and calculation.')
+    logger.exception(
+        'Unhandled exception in CLI for incidence fetching and calculation.')
