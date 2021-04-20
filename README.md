@@ -244,7 +244,7 @@ sudo systemctl enable postgresql
 ### Step 6 - Setup cronjob (Fetch incidences every 2 hours)
 ```ZSH / CMD
 crontab -e
-0 */2 * * * cd /opt/apps/wodss-02-gr-canton-service && /opt/anaconda/envs/WODSS/bin/python3.8 fetch_incidence.py --save_to_db
+5 */2 * * * cd /opt/apps/wodss-02-gr-canton-service && /opt/anaconda/envs/WODSS/bin/python3.8 fetch_incidence.py --save_to_db
 ```
 Um die Cronjob-Ausführung zu debuggen, kann der Output in eine Datei umgeleitet werden. Dazu dem obigen Befehl `> /tmp/cronjob_fetch_incidency.py.log 2>&1` anfügen.
 
