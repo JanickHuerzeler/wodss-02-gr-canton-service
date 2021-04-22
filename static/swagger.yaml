@@ -29,6 +29,10 @@ paths:
       responses:
         "200":
           description: "OK"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Incidence"
         "400":
           description: "Bad Request"
         "500":
@@ -57,13 +61,17 @@ paths:
       responses:
         "200":
           description: "OK"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Incidence"
         "400":
           description: "Bad Request"
         "404":
           description: "Not Found"
         "500":
           description: "Internal Server Error"
-  /municipalities:
+  /municipalities/:
     get:
       tags:
         - "municipalities"
@@ -71,6 +79,10 @@ paths:
       responses:
         "200":
           description: "OK"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Municipality"
         "400":
           description: "Bad Request"
         "500":
@@ -89,9 +101,42 @@ paths:
       responses:
         "200":
           description: "OK"
+          schema:
+            $ref: "#/definitions/Municipality"
         "400":
           description: "Bad Request"
         "404":
           description: "Not Found"
         "500":
           description: "Internal Server Error"
+definitions:
+  Municipality:
+    type: "object"
+    properties:
+      bfsNr:
+        type: "integer"
+        format: "int64"
+      name:
+        type: "string"
+        format: "string"
+      canton:
+        type: "string"
+        format: "string"
+      area:
+        type: "number"
+        format: "float"
+      population:
+        type: "integer"
+        format: "int64"
+  Incidence:
+    type: "object"
+    properties:
+      bfsNr:
+        type: "integer"
+        format: "int64"
+      date:
+        type: "string"
+        format: "date"
+      incidence:
+        type: "number"
+        format: "float"
