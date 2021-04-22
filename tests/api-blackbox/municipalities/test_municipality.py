@@ -20,8 +20,8 @@ class MockResponse:
     @staticmethod
     def get(bfs_nr) -> object:
         switcher = {
-            3506: [{"area": 42.51, "bfsNr": 3506, "canton": "GR", "name": "Vaz/Obervaz", "population": 2780}],
-            3544: [{"area": 190.14, "bfsNr": 3544, "canton": "GR", "name": "Berg\u00fcn Filisur", "population": 905}]
+            3506: {"area": 42.51, "bfsNr": 3506, "canton": "GR", "name": "Vaz/Obervaz", "population": 2780},
+            3544: {"area": 190.14, "bfsNr": 3544, "canton": "GR", "name": "Berg\u00fcn Filisur", "population": 905}
         }
 
         return switcher.get(int(bfs_nr), [])
@@ -166,7 +166,7 @@ def test_municipalities_bfsnr_data(client, app, service_mock, bfsNr, bfsData):
 
     # When
     response = client.get(url)
-    data = response.get_json()[0]
+    data = response.get_json()
 
     # Then
     assert (data['area'], data['bfsNr'], data['canton'],

@@ -32,11 +32,11 @@ def get(bfs_nr):
         logger.debug(f'{error_message}. (bfs_nr: {bfs_nr})')
         return error_message, 400
 
-    municipalities = MunicipalityService.get(bfs_nr)
+    municipality = MunicipalityService.get(bfs_nr)
 
-    if municipalities:
-        logger.debug(f'Found {len(municipalities)} municipality for bfsNr {bfs_nr}')
-        return jsonify(municipalities)
+    if municipality:
+        logger.debug(f'Found municipality for bfsNr {bfs_nr}')
+        return jsonify(municipality)
     else:
         error_message = f'No municipality found for bfsNr {bfs_nr}.'
         logger.debug(error_message)
