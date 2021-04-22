@@ -16,11 +16,5 @@ class MunicipalityService:
 
     @staticmethod
     def get(bfs_nr) -> object:
-        municipalities = db.session.query(
-            Municipality).filter(Municipality.bfsNr == bfs_nr)
-
-        result = []
-        for m in municipalities:
-            result.append(m.serialize)
-
-        return result
+        municipality = db.session.query(Municipality).filter(Municipality.bfsNr == bfs_nr).first()
+        return municipality.serialize if municipality else None
