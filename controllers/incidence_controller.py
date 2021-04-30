@@ -1,16 +1,15 @@
 from datetime import datetime
 from flask import jsonify, request, Blueprint
-from services.IncidenceService import IncidenceService
-from services.MunicipalityService import MunicipalityService
-from services.ErrorHandlerService import ErrorHandlerService
+from services.incidence_service import IncidenceService
+from services.municipality_service import MunicipalityService
+from services.errorhandler_service import ErrorHandlerService
 from configManager import ConfigManager
 from werkzeug.exceptions import InternalServerError
 import logging
 
 logger = logging.getLogger(__name__)
 
-incidence_controller = Blueprint(
-    'incidence_controller', __name__, template_folder='templates')
+incidence_controller = Blueprint('incidence_controller', __name__)
 
 df = ConfigManager.get_instance().get_required_date_format()
 

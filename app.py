@@ -8,9 +8,7 @@ from os import path
 app = Flask(__name__)
 
 log_file_path = path.join(path.dirname(path.abspath(__file__)), 'log.conf')
-print(log_file_path)
 logging.config.fileConfig(log_file_path)
-#logging.basicConfig(filename='wodss-02-gr-canton-service.log', level=logging.DEBUG, format=f'%(asctime)s %(levelname)s %(name)s %(threadName)s : %(message)s')
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://%(user)s:\
 %(pw)s@%(host)s:%(port)s/%(db)s' % ConfigManager.get_instance().get_postgres_config()
@@ -28,7 +26,6 @@ def create_app():
 
 def get_test_app():
     global db, app
-    # app = Flask(__name__)
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///:memory:'
     # overwrite the postgresql settings, as db gets referenced by services
     db = SQLAlchemy(app)

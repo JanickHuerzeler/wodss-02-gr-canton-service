@@ -1,8 +1,8 @@
 from configManager import ConfigManager
-from controllers.incidenceController import incidence_controller
-from controllers.municipalityController import municipality_controller
-from controllers.swaggerUIController import swaggerui_controller
-from setup import app
+from controllers.incidence_controller import incidence_controller
+from controllers.municipality_controller import municipality_controller
+from controllers.swaggerui_controller import swaggerui_controller
+from app import app
 import logging
 from werkzeug.exceptions import InternalServerError, NotFound
 from werkzeug.exceptions import HTTPException

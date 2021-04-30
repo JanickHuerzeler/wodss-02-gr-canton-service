@@ -1,6 +1,6 @@
 from typing import List
 from models.incidence import Incidence
-from setup import db
+from app import db
 from sqlalchemy import and_
 
 

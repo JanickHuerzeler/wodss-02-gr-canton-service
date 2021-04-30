@@ -1,7 +1,7 @@
 import pytest
 from flask import json, jsonify
 from configManager import ConfigManager
-from services.IncidenceService import IncidenceService
+from services.incidence_service import IncidenceService
 from models.incidence import Incidence
 from datetime import datetime, timedelta
 application_root = ConfigManager.get_instance().get_application_root()

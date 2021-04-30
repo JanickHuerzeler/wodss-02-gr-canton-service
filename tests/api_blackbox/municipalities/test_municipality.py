@@ -1,6 +1,6 @@
 from models.municipality import Municipality
 from typing import List
-from services.MunicipalityService import MunicipalityService
+from services.municipality_service import MunicipalityService
 import pytest
 from flask import json, jsonify
 from configManager import ConfigManager

@@ -1,6 +1,6 @@
 import pandas as pd
 from sqlalchemy import create_engine
-from setup import db
+from app import db
 from datetime import datetime, timedelta
 
 

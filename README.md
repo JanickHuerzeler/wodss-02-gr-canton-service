@@ -82,16 +82,6 @@ python fetch_incidence.py --save_to_db
 
 ---
 
-## Build
-
-TODO: FLASK_APP Variable setzen, aktuell via "Play" auf app.py
-
-```ZSH / CMD
-conda activate WODSS
-```
-
----
-
 ## Installieren von neuen Libraries
 
 Wird eine Library neu installiert (`conda install XYZ`), muss diese im `resources/environment.yml` nachgeführt werden.
@@ -110,6 +100,7 @@ conda env update --file resources/environment.yml
 `--prune` würde zusätzlich noch nicht mehr verwendete Libraries gleich entfernen.
 
 ---
+
 ## Unit Tests
 
 Als Test Framework wird `pytest` verwendet.
@@ -242,10 +233,12 @@ sudo systemctl enable postgresql
 ```
 
 ### Step 6 - Setup cronjob (Fetch incidences every 2 hours)
+
 ```ZSH / CMD
 crontab -e
 5 */2 * * * cd /opt/apps/wodss-02-gr-canton-service && /opt/anaconda/envs/WODSS/bin/python3.8 fetch_incidence.py --save_to_db
 ```
+
 Um die Cronjob-Ausführung zu debuggen, kann der Output in eine Datei umgeleitet werden. Dazu dem obigen Befehl `> /tmp/cronjob_fetch_incidency.py.log 2>&1` anfügen.
 
 ### Step 7 - Setup Nginx

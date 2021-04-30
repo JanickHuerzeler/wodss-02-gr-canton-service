@@ -11,8 +11,8 @@
 
   "postgres": {
     "user": "postgres",
-    "pw":   "postgres",
-    "db":   "wodssCantonServiceGR",
+    "pw": "postgres",
+    "db": "wodssCantonServiceGR",
     "host": "localhost",
     "port": "5432"
   },

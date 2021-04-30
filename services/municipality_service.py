@@ -1,6 +1,6 @@
 from typing import List
 from models.municipality import Municipality
-from setup import db
+from app import db
 
 
 class MunicipalityService:

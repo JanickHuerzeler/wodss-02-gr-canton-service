@@ -1,19 +1,19 @@
-from setup import get_test_app, db
+from app import get_test_app, db
 from sqlalchemy.sql import text
 import pytest
 
 
 from configManager import ConfigManager
-from controllers.incidenceController import incidence_controller
-from controllers.municipalityController import municipality_controller
-from controllers.swaggerUIController import swaggerui_controller
-from setup import app
+from controllers.incidence_controller import incidence_controller
+from controllers.municipality_controller import municipality_controller
+from controllers.swaggerui_controller import swaggerui_controller
+from app import app
 
 
 @pytest.fixture
 def app():
     app = get_test_app()
-    
+
     with app.app_context():
 
         server_config = ConfigManager.get_instance().get_server_config()
@@ -24,12 +24,11 @@ def app():
         app.register_blueprint(swaggerui_controller, url_prefix=application_root)
 
         app.config['DEVELOPMENT'] = server_config["development"]
-        
 
-        with app.open_resource("tests/api-blackbox/testdata/dump_municipalities.sql") as f_municipalities:
-            with app.open_resource("tests/api-blackbox/testdata/dump_incidences.sql") as f_incidences:
+        with app.open_resource("tests/api_blackbox/testdata/dump_municipalities.sql") as f_municipalities:
+            with app.open_resource("tests/api_blackbox/testdata/dump_incidences.sql") as f_incidences:
                 engine = db.get_engine()
-                
+
                 with engine.connect() as con:
 
                     create_incidence = '''
@@ -56,27 +55,27 @@ def app():
 
                     con.execute(create_municipality)
                     con.execute(create_incidence)
-                    
+
                     query_municipalities = text(f_municipalities.read().decode("utf8"))
                     con.execute(query_municipalities)
                     query_incidences = text(f_incidences.read().decode("utf8"))
                     con.execute(query_incidences)
 
-        
-        
         # db.executescript(f.read().decode("utf8"))
 
-
-        
         yield app
 
 # https://github.com/pallets/flask/blob/1.1.2/examples/tutorial/tests/conftest.py
+
+
 @pytest.fixture
 def client(app):
     """A test client for the app."""
     return app.test_client()
 
 # https://github.com/pallets/flask/blob/1.1.2/examples/tutorial/tests/conftest.py
+
+
 @pytest.fixture
 def runner(app):
     """A test runner for the app's Click commands."""

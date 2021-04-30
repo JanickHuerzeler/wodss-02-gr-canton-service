@@ -1,4 +1,4 @@
-from setup import db
+from app import db
 
 
 class Municipality(db.Model):

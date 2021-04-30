@@ -1,4 +1,4 @@
-from setup import db
+from app import db
 from configManager import ConfigManager
 
 df = ConfigManager.get_instance().get_required_date_format()
