@@ -101,6 +101,17 @@ conda env update --file resources/environment.yml
 
 ---
 
+## Dev-Environment starten
+Nachdem die vorhergehenden Schritte ausgeführt wurden, kann auch der lokale Flask Server gestartet werden:
+
+``` CMD/ZSH
+python server.py
+```
+
+Dieser ist unter [http://localhost:5000](http://localhost:5000) erreichbar. [http://localhost:5000/v1/](http://localhost:5000/v1/) zeigt das Swagger UI an.
+
+---
+
 ## Unit Tests
 
 Als Test Framework wird `pytest` verwendet.
