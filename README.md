@@ -27,12 +27,13 @@ conda activate WODSS
 
 ## Database
 
-- Install PostgreSQL
-- Create database `wodssCantonServiceGR`
-- User `postgres`, Password `postgres`
-- Create tables `python manage.py db upgrade`
-- Load table `municipality`
-  - Alternatively: Demodata `resources/demoData.sql`
+- PostgreSQL installieren
+- Datenbank `wodssCantonServiceGR` erstellen
+- User `postgres`, Password `postgres` erstellen
+- Tabellen erstellen `python manage.py db upgrade`
+- Daten für `municipality` Tabelle laden
+  - Alternativ: Demodata `resources/demoData.sql`
+- Daten für `incidence` Tabelle laden
 
 ### Schritt-für-Schritt Anleitung
 
@@ -80,6 +81,8 @@ Für inkrementelle Aktualisierungen (neue Tage einfügen) folgenden Befehl ausf�
 python fetch_incidence.py --save_to_db
 ```
 
+Wenn jeweilss `--save_to_db` weggelassen wird, kann ein 'dry-run' ausgeführt werden. Es werden dann alle Schritte bis auf das Schreiben in die DB durchgeführt.
+
 ---
 
 ## Installieren von neuen Libraries
@@ -102,9 +105,10 @@ conda env update --file resources/environment.yml
 ---
 
 ## Dev-Environment starten
+
 Nachdem die vorhergehenden Schritte ausgeführt wurden, kann auch der lokale Flask Server gestartet werden:
 
-``` CMD/ZSH
+```CMD/ZSH
 python server.py
 ```
 
@@ -161,7 +165,9 @@ open index.html
 
 ## Live Environment
 
-#### **URLs** `corona-navigator.ch` `gr.corona-navigator.ch/v1/`
+Folgende Übersicht zeigt die wichtigsten URL und Pfade auf dem Live-Server
+
+#### **URLs** `gr.corona-navigator.ch/v1/`
 
 #### **Deploy latest branch** `~/deploy.sh`
 
@@ -171,13 +177,11 @@ open index.html
 
 #### **Conda Env Update** `conda env update --file /opt/apps/wodss-02-gr-canton-service/resources/environment.yml`
 
-(for `conda env update` a temporary 2GB swapfile must be created first)
-
 ---
 
 ### Setup Live Server (SWITCHengines)
 
-#### Step 1 - Install all required APT and PIP packages
+#### Step 1 - Installieren von benötigten `apt` und `pip` packages
 
 ```ZSH / CMD
 sudo apt-get update
@@ -185,7 +189,7 @@ sudo apt-get install git python3.8-dev python3-pip python3.8 ngnix build-essenti
 sudo pip3 install uwsgi
 ```
 
-### Step 2 - Install Anaconda
+### Step 2 - Anaconda installieren
 
 ```ZSH / CMD
 sudo mkdir -p /opt
@@ -207,9 +211,9 @@ cd /opt/apps
 git clone https://github.com/JanickHuerzeler/wodss-02-gr-canton-service.git
 ```
 
-### Step 4 - Create Virtual Conda Environment
+### Step 4 - Virtual Conda Environment erstellen
 
-Because the virtual machine has insufficient memory, we first have to create a temporary 2GB swapfile
+Weil die bereitgestellte VM zu wenig Arbeitsspeicher hat, wird zuerst ein 2GB Swap-File erstellt
 
 ```ZSH / CMD
 sudo fallocate -l 2G /swapfile
@@ -220,7 +224,7 @@ Shorthander:
 sudo fallocate -l 2G /swapfile && sudo chmod 600 /swapfile && sudo mkswap /swapfile && sudo swapon /swapfile
 ```
 
-Now we can create the conda env using environment.yml
+Nun kann die conda env mit Hilfe des environment.yml erstellt werden
 
 ```ZSH / CMD
 conda env create -f /opt/apps/wodss-02-gr-canton-service/resources/environment.yml
@@ -243,7 +247,7 @@ cd /opt/apps/wodss-02-gr-canton-service/
 sudo systemctl enable postgresql
 ```
 
-### Step 6 - Setup cronjob (Fetch incidences every 2 hours)
+### Step 6 - Setup cronjob (Neue Inzidenzen von GR alle 2 Stunden laden)
 
 ```ZSH / CMD
 crontab -e
@@ -254,7 +258,8 @@ Um die Cronjob-Ausführung zu debuggen, kann der Output in eine Datei umgeleitet
 
 ### Step 7 - Setup Nginx
 
-First we have to open ports 80+443 on SWITCHEngine: https://bit.ly/3fN5UD0
+Die Ports 80 und 443 müssen auf der VM offen sein. SWITCHEngine: https://bit.ly/3fN5UD0
+Danach einen vhost in nginx mit folgender Konfiguration erstellen:
 
 ```ZSH / CMD
 export DOMAIN=corona-navigator.ch
@@ -291,7 +296,7 @@ sudo ln -s /etc/nginx/sites-available/gr.$DOMAIN /etc/nginx/sites-enabled/gr.$DO
 sudo systemctl enable nginx
 ```
 
-### Step 8 - Setup canton service as a system service
+### Step 8 - Setup canton service als system service
 
 ```ZSH / CMD
 sudo tee /etc/systemd/system/wodss-02-gr-canton-service.service << EOF
@@ -328,9 +333,11 @@ sudo certbot run -a manual -i nginx -d gr.corona-navigator.ch
 sudo certbot run -a manual -i nginx -d corona-navigator.ch -d www.corona-navigator.ch
 ```
 
-### Create deploy script
+### Deploy Script erstellen
 
-First we have to open ports 20-21 + 4242-4243 on SWITCHEngine: https://bit.ly/3fN5UD0
+Mit Hilfe dieses Scripts können neue Versionen im Git Repo geholt und auf dem Server ausgerollt werden.
+
+Die Ports 20-21 und 4242-4243 müssen auf der VM offen sein. SWITCHEngine: https://bit.ly/3fN5UD0
 
 ```ZSH / CMD
 sudo tee /home/ubuntu/deploy.sh <<EOF
@@ -361,7 +368,7 @@ EOF
 
 ### Step 11 (optional) - Setup FTP
 
-First we have to open ports 20-21 + 4242-4243 on SWITCHEngine: https://bit.ly/3fN5UD0
+Die Ports 20-21 und 4242-4243 müssen auf der VM offen sein. SWITCHEngine: https://bit.ly/3fN5UD0
 
 ```ZSH / CMD
 sudo apt-get update
