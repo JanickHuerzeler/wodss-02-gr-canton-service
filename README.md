@@ -133,7 +133,7 @@ Visual Studio Code bietet einen integrierten Test-Explorer an, der auch pytest u
 coverage run -m pytest
 ```
 
-oder
+dann:
 
 ```zsh / CMD
 coverage report -m
