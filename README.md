@@ -4,7 +4,7 @@ Kantonsservice für den Workshop in der Vertiefung "Distributed Software Systems
 
 ---
 
-## Prerequisites
+## Voraussetzungen
 
 - [Miniconda](https://docs.conda.io/en/latest/miniconda.html)
 - Python 3.8 (z.B. direkt aus Miniconda)
