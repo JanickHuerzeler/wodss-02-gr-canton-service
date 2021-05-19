@@ -2,13 +2,11 @@ from app import get_test_app, db
 from sqlalchemy.sql import text
 import pytest
 
-
 from configManager import ConfigManager
 from controllers.incidence_controller import incidence_controller
 from controllers.municipality_controller import municipality_controller
 from controllers.swaggerui_controller import swaggerui_controller
 from app import app
-
 
 @pytest.fixture
 def app():
@@ -61,21 +59,15 @@ def app():
                     query_incidences = text(f_incidences.read().decode("utf8"))
                     con.execute(query_incidences)
 
-        # db.executescript(f.read().decode("utf8"))
-
         yield app
 
-# https://github.com/pallets/flask/blob/1.1.2/examples/tutorial/tests/conftest.py
-
-
+# Source: https://github.com/pallets/flask/blob/1.1.2/examples/tutorial/tests/conftest.py
 @pytest.fixture
 def client(app):
     """A test client for the app."""
     return app.test_client()
 
-# https://github.com/pallets/flask/blob/1.1.2/examples/tutorial/tests/conftest.py
-
-
+# Source: https://github.com/pallets/flask/blob/1.1.2/examples/tutorial/tests/conftest.py
 @pytest.fixture
 def runner(app):
     """A test runner for the app's Click commands."""
