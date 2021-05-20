@@ -1,20 +1,27 @@
+import math
 import requests
 import json
 import pandas as pd
 import time
 from datetime import datetime, timedelta
+from configManager import ConfigManager
+
+import logging
+
+logger = logging.getLogger(__file__)
+
+arcgis_config = ConfigManager.get_instance().get_arcgis_rest_services_cases_per_region_configuration()
 
 # The covid-19 API allows only sending 2000 data rows per request
 # One date contains 12 rows. Thererfore we can request up to 166 days per request (166 * 12 = 1992)
-MAX_DAYS_PER_REQUEST = 166
-MAX_RESULT_ROWS = 1992
-
+MAX_DAYS_PER_REQUEST: int = math.floor(int(arcgis_config['max_data_rows_per_request']) / int(arcgis_config['number_of_regions'])) # floor(2000 / 12) = 166
+MAX_RESULT_ROWS: int = int(arcgis_config['number_of_regions']) * MAX_DAYS_PER_REQUEST # 166 * 12 = 1992
 
 def fetch_corona_data(dateFrom, dateTo) -> str:
     ''' 
     Performs a query on the canton endpoint for receiving covid-19 data. See https://curl.trillworks.com/ for request usage.
     '''
-    endpointUrl = 'https://services1.arcgis.com/YAuo6vcW85VPu7OE/ArcGIS/rest/services/Fallzahlen_Pro_Region/FeatureServer/0/query'
+    endpoint_url =  arcgis_config['endpoint_url']
 
     # params = (
     # ('f', 'json'),
@@ -39,7 +46,7 @@ def fetch_corona_data(dateFrom, dateTo) -> str:
     # ('sqlFormat','none'),
     # ('pjson',''),
     # ('token','')
-    # )
+    # )    
 
     params = (
         ('f', 'json'),
@@ -50,7 +57,8 @@ def fetch_corona_data(dateFrom, dateTo) -> str:
         ('sqlFormat', 'standard')
     )
     try:
-        response = requests.get(endpointUrl, params=params)
+        logger.info(f'Fetching corona cases from ArcGIS endpoint (MAX_DAYS_PER_REQUEST: {MAX_DAYS_PER_REQUEST}, MAX_RESULT_ROWS: {MAX_RESULT_ROWS}).')
+        response = requests.get(endpoint_url, params=params)
         response_json = response.json()
         return response_json
     except requests.exceptions.HTTPError as errh:
@@ -76,13 +84,14 @@ def get_corona_cases(dateFrom, dateTo) -> pd.DataFrame:
 
     while dateFrom <= dateTo:
 
-        print("Fetching cases from API from '{}' to '{}'".format(
+        logger.debug("Fetching cases from API from '{}' to '{}'".format(
             dateFrom, dateFrom + timedelta(days=MAX_DAYS_PER_REQUEST) if dateFrom + timedelta(days=MAX_DAYS_PER_REQUEST) < dateTo else dateTo))
+        
         response = fetch_corona_data(dateFrom, dateTo)
         df_response_json = pd.json_normalize(response['features'])
 
         if df_response_json.empty:
-            print('Nothing to do')
+            logger.debug('Nothing to do - no new corona cases to fetch.')
             return None
 
         columnnames = [str.replace(col, 'attributes.', '') for col in df_response_json.columns]

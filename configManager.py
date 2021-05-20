@@ -16,6 +16,7 @@ class ConfigManager:
     __bfsCommunityBoothConfiguration = None
     __cantonMetadataConfiguration = None
     __application_root = None
+    __arcgis_rest_services_cases_per_region_configuration = None
 
     ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 
@@ -47,6 +48,7 @@ class ConfigManager:
             self.__bfsCommunityBoothConfiguration = config['bfsCommunityBoothConfiguration']
             self.__cantonMetadataConfiguration = config['cantonMetadataConfiguration']
             self.__application_root = config['application_root']
+            self.__arcgis_rest_services_cases_per_region_configuration = config['arcgis_rest_services_cases_per_region_configuration']
 
 
     def log_configfile_path(self):
@@ -72,3 +74,6 @@ class ConfigManager:
 
     def get_application_root(self):
         return self.__application_root
+
+    def get_arcgis_rest_services_cases_per_region_configuration(self):
+        return self.__arcgis_rest_services_cases_per_region_configuration

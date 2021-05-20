@@ -8,6 +8,12 @@
     "dataSourceGetUrl": "https://www.bfs.admin.ch/bfsstatic/dam/assets/11587763/master",
     "excelFileName": "CantonMetadata.xlsx"
   },
+  "arcgis_rest_services_cases_per_region_configuration":{
+    "endpoint_url": "https://services1.arcgis.com/YAuo6vcW85VPu7OE/ArcGIS/rest/services/Fallzahlen_Pro_Region/FeatureServer/0/query",
+    "max_data_rows_per_request": 2000,
+    "number_of_regions": 12
+  },
+  
 
   "postgres": {
     "user": "postgres",
