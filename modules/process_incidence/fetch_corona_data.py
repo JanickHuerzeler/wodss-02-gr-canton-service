@@ -13,7 +13,7 @@ logger = logging.getLogger(__file__)
 arcgis_config = ConfigManager.get_instance().get_arcgis_rest_services_cases_per_region_configuration()
 
 # The covid-19 API allows only sending 2000 data rows per request
-# One date contains 12 rows. Thererfore we can request up to 166 days per request (166 * 12 = 1992)
+# One date contains 12 rows. Therefore we can request up to 166 days per request (166 * 12 = 1992)
 MAX_DAYS_PER_REQUEST: int = math.floor(int(arcgis_config['max_data_rows_per_request']) / int(arcgis_config['number_of_regions'])) # floor(2000 / 12) = 166
 MAX_RESULT_ROWS: int = int(arcgis_config['number_of_regions']) * MAX_DAYS_PER_REQUEST # 166 * 12 = 1992
 
