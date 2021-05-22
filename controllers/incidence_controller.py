@@ -34,6 +34,9 @@ def get_all():
 
     incidences = IncidenceService.get_all(date_from, date_to)
 
+    logger.debug(
+        f'Found {len(incidences)} incidences. (date_from: {date_from}, date_to: {date_to})')
+
     return jsonify(incidences)
 
 
