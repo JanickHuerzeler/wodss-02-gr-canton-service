@@ -47,6 +47,12 @@ CREATE USER postgres
 
 Zu diesem Zeitpunkt ist die Datenbank und der User erstellt.
 
+Eine neue Verbindung auf die Datenbank kann mit folgendem Befehl geöffnet werden:
+
+```ZSH / CMD
+psql -h localhost -d wodssCantonServiceGR -U postgres
+```
+
 In einem neuen Terminal/Konsole sollen nun die Tabellen aufgrund der Model-Klassen in Python erstellt werden:
 
 Falls DB neu erstellt werden soll:
