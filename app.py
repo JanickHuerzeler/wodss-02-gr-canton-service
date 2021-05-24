@@ -8,7 +8,7 @@ from os import path
 app = Flask(__name__)
 
 log_file_path = path.join(path.dirname(path.abspath(__file__)), 'log.conf')
-logging.config.fileConfig(log_file_path)
+logging.config.fileConfig(log_file_path, disable_existing_loggers=True)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://%(user)s:\
 %(pw)s@%(host)s:%(port)s/%(db)s' % ConfigManager.get_instance().get_postgres_config()
